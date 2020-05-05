@@ -8,7 +8,7 @@
     <div class="row p-3 no-gutters align-items-center mouse-inactive border-bottom">
         <span class="col-2" [innerHTML]="'block.transaction.name' | viTranslate"></span>
         <span class="col-10 mat-body-2" [innerHTML]="wrapper.requestName | prettify"
-            [ngClass]="{'text-danger' : !wrapper.isExecuted, 'text-success': wrapper.isExecuted}"></span>
+            [ngClass]="{'text-danger' : !wrapper.isExecuted, 'text-': wrapper.isExecuted}"></span>
     </div>
     <div class="row p-3 no-gutters align-items-center mouse-inactive border-bottom" *ngIf="wrapper.isHasRequest">
         <span class="col-2" [innerHTML]="'block.transaction.request' | viTranslate"></span>

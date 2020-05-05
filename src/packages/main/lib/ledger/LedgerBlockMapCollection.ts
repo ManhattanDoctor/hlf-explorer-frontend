@@ -34,6 +34,6 @@ export class LedgerBlockMapCollection extends PaginableDataSourceMapCollection<L
     }
 
     protected parseItem(item: any): LedgerBlock {
-        return LedgerBlock.toClass(item);
+        return TransformUtil.toClass(LedgerBlock, item);
     }
 }

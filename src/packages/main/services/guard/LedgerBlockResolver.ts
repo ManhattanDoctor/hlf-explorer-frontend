@@ -38,7 +38,7 @@ export class LedgerBlockResolver implements Resolve<LedgerBlock> {
             let item = await this.transport.sendListen(
                 new TransportHttpCommandAsync<ILedgerBlockGetResponse>('ledger/block', { data: { numberOrHash } })
             );
-            return LedgerBlock.toClass(item.value);
+            return TransformUtil.toClass(LedgerBlock, item.value);
         } catch (error) {
             this.router.navigate(RouterService.DEFAULT_URL);
             return Promise.reject(error.toString());

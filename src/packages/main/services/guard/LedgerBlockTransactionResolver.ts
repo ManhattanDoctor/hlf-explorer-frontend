@@ -38,7 +38,7 @@ export class LedgerBlockTransactionResolver implements Resolve<LedgerBlockTransa
             let item = await this.transport.sendListen(
                 new TransportHttpCommandAsync<ILedgerBlockTransactionGetResponse>('ledger/transaction', { data: { hashOrUid } })
             );
-            return LedgerBlockTransaction.toClass(item.value);
+            return TransformUtil.toClass(LedgerBlockTransaction, item.value);
         } catch (error) {
             this.router.navigate(RouterService.DEFAULT_URL);
             return Promise.reject(error.toString());
