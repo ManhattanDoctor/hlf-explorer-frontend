@@ -29,6 +29,7 @@ export class LedgerTransactionDetailsComponent extends IWindowContent {
     public responseErrorMessage: string;
 
     public request: string;
+    public requestRaw: string;
     public requestUserId: string;
     public requestAlgorithm: string;
 
@@ -65,6 +66,10 @@ export class LedgerTransactionDetailsComponent extends IWindowContent {
         value = transaction.requestData;
         if (value !== this.request) {
             this.request = value;
+        }
+        value = transaction.requestRaw;
+        if (value !== this.requestRaw) {
+            this.requestRaw = value;
         }
 
         value = transaction.responseData;
@@ -131,9 +136,6 @@ export class LedgerTransactionDetailsComponent extends IWindowContent {
     private get requestIndex(): number {
         return 1;
     }
-    private get responseIndex(): number {
-        return 2;
-    }
 
     //--------------------------------------------------------------------------
     //
@@ -160,9 +162,6 @@ export class LedgerTransactionDetailsComponent extends IWindowContent {
             case 'request':
                 this.selectedIndex = this.requestIndex;
                 break;
-            case 'response':
-                this.selectedIndex = this.responseIndex;
-                break;
         }
     }
 
@@ -181,9 +180,6 @@ export class LedgerTransactionDetailsComponent extends IWindowContent {
             case this.requestIndex:
                 this.mode = Mode.REQUEST;
                 break;
-            case this.responseIndex:
-                this.mode = Mode.RESPONSE;
-                break;
         }
     }
 }
@@ -191,5 +187,4 @@ export class LedgerTransactionDetailsComponent extends IWindowContent {
 enum Mode {
     DETAILS = 'details',
     REQUEST = 'request',
-    RESPONSE = 'response'
 }

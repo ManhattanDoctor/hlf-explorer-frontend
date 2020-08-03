@@ -7,7 +7,7 @@
     </p>
 
     <mat-paginator [length]="blocks?.total" [pageSize]="blocks?.pageSize" [hidePageSize]="true"
-        (page)="blocks.pageIndex = $event.pageIndex"></mat-paginator>
+        [pageIndex]="blocks?.pageIndex" (page)="blocks.pageIndex = $event.pageIndex"></mat-paginator>
 
     <button class="flex-shrink-0" mat-icon-button (click)="blocks.reload()"
         [matTooltip]="'general.refresh' | viTranslate" [disabled]="blocks?.isLoading">

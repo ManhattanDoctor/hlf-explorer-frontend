@@ -3,7 +3,7 @@
     "version": 1,
     "newProjectRoot": "projects",
     "projects": {
-        "hlf-explorer": {
+        "main": {
             "root": "src/packages/main",
             "sourceRoot": "src/packages/main",
             "projectType": "application",
@@ -17,7 +17,7 @@
                 "build": {
                     "builder": "@angular-devkit/build-angular:browser",
                     "options": {
-                        "outputPath": "build/hlf-explorer",
+                        "outputPath": "build/main",
                         "index": "src/packages/main/index.html",
                         "main": "src/packages/main/main.ts",
                         "polyfills": "polyfills.ts",
@@ -71,11 +71,11 @@
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "options": {
-                        "browserTarget": "hlf-explorer:build"
+                        "browserTarget": "main:build"
                     },
                     "configurations": {
                         "production": {
-                            "browserTarget": "hlf-explorer:build:production"
+                            "browserTarget": "main:build:production"
                         }
                     }
                 }

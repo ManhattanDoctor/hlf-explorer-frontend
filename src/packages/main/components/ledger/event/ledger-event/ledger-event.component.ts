@@ -1,27 +1,27 @@
 import { Component, ElementRef, Input } from '@angular/core';
 import { DestroyableContainer } from '@ts-core/common';
 import { ViewUtil } from '@ts-core/frontend-angular';
-import { LedgerBlock } from '@hlf-explorer/common/ledger';
+import { LedgerBlockEvent } from '@hlf-explorer/common/ledger';
 import { PipeService } from '../../../../services/PipeService';
+import { LedgerBlockEventWrapper } from '../../../../lib/ledger/LedgerBlockEventWrapper';
 import * as _ from 'lodash';
 
 @Component({
-    selector: 'ledger-block-last',
-    templateUrl: 'ledger-block-last.component.html'
+    selector: 'ledger-event',
+    templateUrl: 'ledger-event.component.html'
 })
-export class LedgerBlockLastComponent extends DestroyableContainer {
+export class LedgerEventComponent extends DestroyableContainer {
     //--------------------------------------------------------------------------
     //
     // 	Properties
     //
     //--------------------------------------------------------------------------
 
-    private _block: LedgerBlock;
+    private _event: LedgerBlockEvent;
 
+    public name: string;
     public date: string;
-    public number: string;
-    public events: string;
-    public transactions: string;
+    public data: string;
 
     //--------------------------------------------------------------------------
     //
@@ -40,27 +40,24 @@ export class LedgerBlockLastComponent extends DestroyableContainer {
     //
     //--------------------------------------------------------------------------
 
-    private commitBlockProperties(): void {
+    private commitEventProperties(): void {
         let value = null;
 
-        value = this.pipe.momentDateFromNow.transform(this.block.createdDate, null);
+        let event = new LedgerBlockEventWrapper(this.event);
+
+        value = this.pipe.momentDate.transform(event.createdDate);
         if (value !== this.date) {
             this.date = value;
         }
 
-        value = `# ${this.block.number}`;
-        if (value !== this.number) {
-            this.number = value;
+        value = event.name;
+        if (value !== this.name) {
+            this.name = value;
         }
 
-        value = !_.isEmpty(this.block.transactions) ? this.block.transactions.length : 0;
-        if (value !== this.transactions) {
-            this.transactions = value;
-        }
-
-        value = !_.isEmpty(this.block.events) ? this.block.events.length : 0;
-        if (value !== this.events) {
-            this.events = value;
+        value = event.eventData;
+        if (value !== this.data) {
+            this.data = value;
         }
     }
 
@@ -70,17 +67,17 @@ export class LedgerBlockLastComponent extends DestroyableContainer {
     //
     //--------------------------------------------------------------------------
 
-    public get block(): LedgerBlock {
-        return this._block;
+    public get event(): LedgerBlockEvent {
+        return this._event;
     }
     @Input()
-    public set block(value: LedgerBlock) {
-        if (value === this._block) {
+    public set event(value: LedgerBlockEvent) {
+        if (value === this._event) {
             return;
         }
-        this._block = value;
-        if (this._block) {
-            this.commitBlockProperties();
+        this._event = value;
+        if (this._event) {
+            this.commitEventProperties();
         }
     }
 }

@@ -1,28 +1,17 @@
 import { LedgerBlockTransaction } from '@hlf-explorer/common/ledger';
 import * as _ from 'lodash';
-import { ObjectUtil, TransformUtil } from '@ts-core/common/util';
+import { ObjectUtil } from '@ts-core/common/util';
 import { ExtendedError } from '@ts-core/common/error';
 import { TextHighlightUtil } from '../util/TextHighlightUtil';
 
 export class LedgerBlockTransactionWrapper extends LedgerBlockTransaction {
     // --------------------------------------------------------------------------
     //
-    //  Propertes
+    //  Static Methods
     //
     // --------------------------------------------------------------------------
 
-    constructor(item: LedgerBlockTransaction) {
-        super();
-        ObjectUtil.copyProperties(item, this);
-    }
-
-    // --------------------------------------------------------------------------
-    //
-    //  Private Methods
-    //
-    // --------------------------------------------------------------------------
-
-    private parseJSON(data: any): string {
+    public static parseJSON(data: any): string {
         if (_.isNil(data)) {
             return null;
         }
@@ -34,6 +23,17 @@ export class LedgerBlockTransactionWrapper extends LedgerBlockTransaction {
         data = JSON.stringify(data, null, 2);
         data = TextHighlightUtil.text(data);
         return data;
+    }
+
+    // --------------------------------------------------------------------------
+    //
+    //  Propertes
+    //
+    // --------------------------------------------------------------------------
+
+    constructor(item: LedgerBlockTransaction) {
+        super();
+        ObjectUtil.copyProperties(item, this);
     }
 
     // --------------------------------------------------------------------------
@@ -66,8 +66,12 @@ export class LedgerBlockTransactionWrapper extends LedgerBlockTransaction {
         return this.isValid && !this.isError;
     }
 
+    public get requestRaw(): any {
+        return this.isHasRequest ? LedgerBlockTransactionWrapper.parseJSON(this.request) : null;
+    }
+
     public get requestData(): any {
-        return this.isHasRequest ? this.parseJSON(this.request.request) : null;
+        return this.isHasRequest ? LedgerBlockTransactionWrapper.parseJSON(this.request.request) : null;
     }
 
     public get requestAlgorithm(): any {
@@ -77,7 +81,7 @@ export class LedgerBlockTransactionWrapper extends LedgerBlockTransaction {
     }
 
     public get responseData(): any {
-        return this.isHasResponse ? this.parseJSON(this.response.response) : null;
+        return this.isHasResponse ? LedgerBlockTransactionWrapper.parseJSON(this.response.response) : null;
     }
 
     public get responseErrorMessage(): string {
@@ -87,7 +91,7 @@ export class LedgerBlockTransactionWrapper extends LedgerBlockTransaction {
         let item = this.response.response;
         let value = `${item.message}: code ${item.code}`;
         if (ObjectUtil.isJSON(item.details)) {
-            value += `\n${this.parseJSON(JSON.parse(item.details))}`;
+            value += `\n${LedgerBlockTransactionWrapper.parseJSON(JSON.parse(item.details))}`;
         }
         return value;
     }

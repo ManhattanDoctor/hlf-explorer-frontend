@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { RouterBaseService } from '@ts-core/frontend-angular';
 import { NativeWindowService } from '@ts-core/frontend/service';
-import { LedgerBlock, LedgerBlockTransaction } from '@hlf-explorer/common/ledger';
+import { LedgerBlock, LedgerBlockTransaction, LedgerBlockEvent } from '@hlf-explorer/common/ledger';
 import * as _ from 'lodash';
 
 @Injectable()
@@ -19,8 +19,11 @@ export class RouterService extends RouterBaseService {
     public static TRANSACTION_URL = 'transaction';
     public static TRANSACTIONS_URL = 'transactions';
 
-    public static DASHBOARD_URL = 'dashboard';
+    public static EVENT_URL = 'event';
+    public static EVENTS_URL = 'events';
+
     public static MESSAGE_URL = 'message';
+    public static DASHBOARD_URL = 'dashboard';
 
     public static DEFAULT_URL = RouterService.DASHBOARD_URL;
 
@@ -49,8 +52,13 @@ export class RouterService extends RouterBaseService {
         this.navigate(`${RouterService.BLOCKS_URL}`);
     }
 
+    public eventOpen(item: LedgerBlockEvent | string): void {
+        let value = _.isString(item) ? item : item.uid;
+        this.navigate(`${RouterService.EVENT_URL}/${value}`);
+    }
+    
     public transactionOpen(item: LedgerBlockTransaction | string): void {
-        let value = _.isString(item) ? item : item.requestId || item.hash;
+        let value = _.isString(item) ? item : item.hash;
         this.navigate(`${RouterService.TRANSACTION_URL}/${value}`);
     }
 

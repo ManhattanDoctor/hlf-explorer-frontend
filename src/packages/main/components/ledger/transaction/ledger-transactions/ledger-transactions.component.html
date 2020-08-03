@@ -7,7 +7,7 @@
     </p>
 
     <mat-paginator [length]="transactions?.total" [pageSize]="transactions?.pageSize" [hidePageSize]="true"
-        (page)="transactions.pageIndex = $event.pageIndex"></mat-paginator>
+        [pageIndex]="transactions?.pageIndex" (page)="transactions.pageIndex = $event.pageIndex"></mat-paginator>
 
     <button class="flex-shrink-0" mat-icon-button (click)="transactions.reload()"
         [matTooltip]="'general.refresh' | viTranslate" [disabled]="transactions?.isLoading">

@@ -5,6 +5,7 @@ import { UserBaseServiceEvent } from '@ts-core/frontend-angular';
 import { LanguageService } from '@ts-core/frontend/language';
 import { LedgerBlockMapCollection } from '../lib/ledger/LedgerBlockMapCollection';
 import { LedgerBlockTransactionMapCollection } from '../lib/ledger/LedgerBlockTransactionMapCollection';
+import { LedgerBlockEventMapCollection } from '../lib/ledger/LedgerBlockEventMapCollection';
 
 @Injectable()
 export class LedgerService extends DestroyableContainer {
@@ -15,6 +16,7 @@ export class LedgerService extends DestroyableContainer {
     //--------------------------------------------------------------------------
 
     private _blocks: LedgerBlockMapCollection;
+    private _events: LedgerBlockEventMapCollection;
     private _transactions: LedgerBlockTransactionMapCollection;
 
     //--------------------------------------------------------------------------
@@ -27,6 +29,7 @@ export class LedgerService extends DestroyableContainer {
         super();
 
         this._blocks = new LedgerBlockMapCollection(transport);
+        this._events = new LedgerBlockEventMapCollection(transport);
         this._transactions = new LedgerBlockTransactionMapCollection(transport);
 
         // Language
@@ -52,6 +55,10 @@ export class LedgerService extends DestroyableContainer {
         return this._blocks;
     }
 
+    public get events(): LedgerBlockEventMapCollection {
+        return this._events;
+    }
+    
     public get transactions(): LedgerBlockTransactionMapCollection {
         return this._transactions;
     }

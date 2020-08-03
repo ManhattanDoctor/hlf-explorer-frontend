@@ -5,7 +5,7 @@ import { TextHighlightUtil } from '../../../../lib/util/TextHighlightUtil';
 import { TransformUtil } from '@ts-core/common/util';
 import * as _ from 'lodash';
 import { MapCollection } from '@ts-core/common/map';
-import { ITransportFabricTransaction } from '@ts-core/blockchain-fabric/transport/block';
+import { ITransportFabricTransaction, ITransportFabricEvent } from '@ts-core/blockchain-fabric/transport/block';
 import { RouterService } from '../../../../services/RouterService';
 
 @Component({
@@ -20,7 +20,8 @@ export class LedgerBlockDetailsComponent extends IWindowContent {
     //--------------------------------------------------------------------------
 
     public rawText: string;
-    public transactions: MapCollection<ITransportFabricTransaction>;
+    public blockEvents: MapCollection<ITransportFabricEvent>;
+    public blockTransactions: MapCollection<ITransportFabricTransaction>;
 
     private _block: LedgerBlock;
 
@@ -39,7 +40,8 @@ export class LedgerBlockDetailsComponent extends IWindowContent {
 
         let mode = this.router.getParam<Mode>('tab', Mode.DETAILS);
         this.mode = mode in Mode ? mode : Mode.DETAILS;
-        this.transactions = new MapCollection('hash');
+        this.blockEvents = new MapCollection('transactionHash');
+        this.blockTransactions = new MapCollection('hash');
     }
 
     //--------------------------------------------------------------------------
@@ -49,8 +51,12 @@ export class LedgerBlockDetailsComponent extends IWindowContent {
     //--------------------------------------------------------------------------
 
     private commitBlockProperties(): void {
-        this.transactions.clear();
-        this.transactions.addItems(this.block.transactions);
+        this.blockEvents.clear();
+        this.blockEvents.addItems(this.block.events);
+
+        this.blockTransactions.clear();
+        this.blockTransactions.addItems(this.block.transactions);
+
         this.checkText();
     }
 
@@ -98,8 +104,11 @@ export class LedgerBlockDetailsComponent extends IWindowContent {
     private get transactionsIndex(): number {
         return 1;
     }
-    private get rawDataIndex(): number {
+    private get eventsIndex(): number {
         return 2;
+    }
+    private get rawDataIndex(): number {
+        return 3;
     }
 
     //--------------------------------------------------------------------------
@@ -131,6 +140,9 @@ export class LedgerBlockDetailsComponent extends IWindowContent {
             case 'transactions':
                 this.selectedIndex = this.transactionsIndex;
                 break;
+            case 'events':
+                this.selectedIndex = this.eventsIndex;
+                break;
         }
     }
 
@@ -152,6 +164,9 @@ export class LedgerBlockDetailsComponent extends IWindowContent {
             case this.transactionsIndex:
                 this.mode = Mode.TRANSACTIONS;
                 break;
+            case this.eventsIndex:
+                this.mode = Mode.EVENTS;
+                break;
         }
     }
 }
@@ -159,5 +174,6 @@ export class LedgerBlockDetailsComponent extends IWindowContent {
 enum Mode {
     DETAILS = 'details',
     RAW_DATA = 'rawData',
-    TRANSACTIONS = 'transactions'
+    TRANSACTIONS = 'transactions',
+    EVENTS = 'events'
 }

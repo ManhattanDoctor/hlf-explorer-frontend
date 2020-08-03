@@ -31,6 +31,7 @@ export class ShellComponent extends ShellBaseComponent {
     private static DASHBOARD_INDEX = 0;
     private static BLOCKS_INDEX = 1;
     private static TRANSACTIONS_INDEX = 1;
+    private static EVENTS_INDEX = 2;
 
     //--------------------------------------------------------------------------
     //
@@ -57,7 +58,10 @@ export class ShellComponent extends ShellBaseComponent {
         this.menu = new MenuItems(this.language, null, true);
         this.menu.add(new NavigationMenuItem('tab.dashboard', ShellComponent.DASHBOARD_INDEX, 'fas fa-tachometer-alt', '/' + RouterService.DASHBOARD_URL));
         this.menu.add(new NavigationMenuItem('tab.blocks', ShellComponent.BLOCKS_INDEX, 'fas fa-tachometer-alt', '/' + RouterService.BLOCKS_URL));
-        this.menu.add(new NavigationMenuItem('tab.transactions', ShellComponent.TRANSACTIONS_INDEX, 'fas fa-tachometer-alt', '/' + RouterService.TRANSACTIONS_URL));
+        this.menu.add(
+            new NavigationMenuItem('tab.transactions', ShellComponent.TRANSACTIONS_INDEX, 'fas fa-tachometer-alt', '/' + RouterService.TRANSACTIONS_URL)
+        );
+        this.menu.add(new NavigationMenuItem('tab.events', ShellComponent.EVENTS_INDEX, 'fas fa-calendar-alt', '/' + RouterService.EVENTS_URL));
 
         for (let item of this.menu.items) {
             if (item instanceof NavigationMenuItem) {

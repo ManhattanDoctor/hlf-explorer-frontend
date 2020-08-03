@@ -13,9 +13,8 @@ export class LedgerBlockTransactionMapCollection extends PaginableDataSourceMapC
     //--------------------------------------------------------------------------
 
     constructor(private transport: Transport) {
-        super(`hash`);
+        super('hash');
         this.sort.createdDate = false;
-        this.isClearAfterLoad = true;
     }
 
     //--------------------------------------------------------------------------
@@ -25,7 +24,6 @@ export class LedgerBlockTransactionMapCollection extends PaginableDataSourceMapC
     //--------------------------------------------------------------------------
 
     protected commitPageIndexProperties(): void {
-        this._isAllLoaded = false;
         this.load();
     }
 

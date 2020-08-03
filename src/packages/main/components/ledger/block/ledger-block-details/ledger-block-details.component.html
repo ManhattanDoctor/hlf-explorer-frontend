@@ -1,6 +1,7 @@
 <mat-tab-group class="tabs-stretch no-border" (selectedIndexChange)="selectedIndex = $event" [selectedIndex]="selectedIndex">
     <mat-tab label="{{'block.details' | viTranslate}}"></mat-tab>
-    <mat-tab label="{{'block.transactions' | viTranslate}}"></mat-tab>
+    <mat-tab label="{{'block.transaction.transactions' | viTranslate}}"></mat-tab>
+    <mat-tab label="{{'block.event.events' | viTranslate}}"></mat-tab>
     <mat-tab label="{{'block.rawData' | viTranslate}}"></mat-tab>
 </mat-tab-group>
 
@@ -17,25 +18,37 @@
         <span class="col-2" [innerHTML]="'block.createdDate' | viTranslate"></span>
         <span class="col-10 mat-body-2" [innerHTML]="block.createdDate | viMomentDateFromNow"></span>
     </p>
-    <p class="row p-3 no-gutters align-items-center mouse-active border-bottom" (click)="mode = 'transactions'">
-        <span class="col-2" [innerHTML]="'block.transactions' | viTranslate"></span>
-        <span class="col-10 mat-body-2" [innerHTML]="block.transactions?.length"></span>
-    </p>
-    <p class="row p-3 no-gutters align-items-center mouse-inactive">
-        <span class="col-2" [innerHTML]="'block.events' | viTranslate"></span>
-        <span class="col-10 mat-body-2"></span>
-    </p>
 
-    <div class="mat-nav-list flex-grow-1 scroll-auto border-top" *ngIf="block.transactions?.length > 0">
-        <ledger-transaction [transaction]="item" *ngFor="let item of transactions?.collection; trackBy: transactions?.trackByFn; last as isLast"
-            class="mat-list-item mouse-active p-3 border-bottom" [class.border-bottom-0]="isLast" (click)="router.transactionOpen(item)"></ledger-transaction>
+    <div *ngIf="blockEvents?.length > 0">
+        <p class="row p-3 no-gutters align-items-center mouse-active">
+            <span class="col-2 mat-body-2" [innerHTML]="'block.event.events' | viTranslate"></span>
+        </p>
+        <div class="mat-nav-list flex-grow-1 scroll-auto">
+            <ledger-event [event]="item" *ngFor="let item of blockEvents?.collection; trackBy: blockEvents?.trackByFn; last as isLast"
+                class="mat-list-item mouse-active p-3 border-bottom" [class.border-bottom-0]="isLast" (click)="router.eventOpen(item)"></ledger-event>
+        </div>
+    </div>
+
+    <div class="border-top"  *ngIf="blockTransactions?.length > 0">
+        <p class="row p-3 no-gutters align-items-center mouse-active">
+            <span class="col-2 mat-body-2" [innerHTML]="'block.transaction.transactions' | viTranslate"></span>
+        </p>
+        <div class="mat-nav-list flex-grow-1 scroll-auto">
+            <ledger-transaction [transaction]="item" *ngFor="let item of blockTransactions?.collection; trackBy: blockTransactions?.trackByFn; last as isLast"
+                class="mat-list-item mouse-active p-3 border-bottom" [class.border-bottom-0]="isLast" (click)="router.transactionOpen(item)"></ledger-transaction>
+        </div>
     </div>
 
 </div>
 
 <div class="mat-nav-list flex-grow-1 scroll-auto" *ngIf="mode === 'transactions'">
-    <ledger-transaction [transaction]="item" *ngFor="let item of transactions?.collection; trackBy: transactions?.trackByFn; last as isLast"
+    <ledger-transaction [transaction]="item" *ngFor="let item of blockTransactions?.collection; trackBy: blockTransactions?.trackByFn; last as isLast"
         class="mat-list-item mouse-active p-3 border-bottom" [class.border-bottom-0]="isLast" (click)="router.transactionOpen(item)"></ledger-transaction>
+</div>
+
+<div class="mat-nav-list flex-grow-1 scroll-auto" *ngIf="mode === 'events'">
+    <ledger-event [event]="item" *ngFor="let item of blockEvents?.collection; trackBy: blockEvents?.trackByFn; last as isLast"
+        class="mat-list-item mouse-active p-3 border-bottom" [class.border-bottom-0]="isLast" (click)="router.eventOpen(item)"></ledger-event>
 </div>
 
 <div class="p-3" *ngIf="mode === 'rawData'">

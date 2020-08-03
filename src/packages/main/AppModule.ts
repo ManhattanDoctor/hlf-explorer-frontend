@@ -44,6 +44,8 @@ import { SearchContainerComponent } from './components/common/search-container/s
 import { BlockComponent } from './components/route/block/block.component';
 import { TransactionComponent } from './components/route/transaction/transaction.component';
 import { BlocksComponent } from './components/route/blocks/blocks.component';
+import { EventComponent } from './components/route/event/event.component';
+import { EventsComponent } from './components/route/events/events.component';
 import { TransactionsComponent } from './components/route/transactions/transactions.component';
 import { DashboardComponent } from './components/route/dashboard/dashboard.component';
 import { RootComponent } from './components/route/root/root.component';
@@ -54,6 +56,11 @@ import { LedgerTransactionsComponent } from './components/ledger/transaction/led
 import { LedgerTransactionsLastComponent } from './components/ledger/transaction/ledger-transactions-last/ledger-transactions-last.component';
 import { LedgerTransactionComponent } from './components/ledger/transaction/ledger-transaction/ledger-transaction.component';
 import { LedgerTransactionDetailsComponent } from './components/ledger/transaction/ledger-transaction-details/ledger-transaction-details.component';
+import { LedgerEventLastComponent } from './components/ledger/event/ledger-event-last/ledger-event-last.component';
+import { LedgerEventsComponent } from './components/ledger/event/ledger-events/ledger-events.component';
+import { LedgerEventsLastComponent } from './components/ledger/event/ledger-events-last/ledger-events-last.component';
+import { LedgerEventComponent } from './components/ledger/event/ledger-event/ledger-event.component';
+import { LedgerEventDetailsComponent } from './components/ledger/event/ledger-event-details/ledger-event-details.component';
 import { LedgerTransactionLastComponent } from './components/ledger/transaction/ledger-transaction-last/ledger-transaction-last.component';
 import { LedgerBlockLastComponent } from './components/ledger/block/ledger-block-last/ledger-block-last.component';
 import { LedgerBlocksComponent } from './components/ledger/block/ledger-blocks/ledger-blocks.component';
@@ -65,6 +72,7 @@ import { SettingsService } from './services/SettingsService';
 import { PrettifyPipe } from './services/pipe/PrettifyPipe';
 import { LedgerBlockResolver } from './services/guard/LedgerBlockResolver';
 import { LedgerMonitorResolver } from './services/guard/LedgerMonitorResolver';
+import { LedgerBlockEventResolver } from './services/guard/LedgerBlockEventResolver';
 import { LedgerBlockTransactionResolver } from './services/guard/LedgerBlockTransactionResolver';
 import { ShellServiceImpl } from './services/shell/ShellServiceImpl';
 import { ShellService } from './services/ShellService';
@@ -126,18 +134,29 @@ export const imports: any[] = [
                     component: TransactionsComponent
                 },
                 {
-                    path: `${RouterService.BLOCK_URL}/:numberOrHash`,
+                    path: RouterService.EVENTS_URL,
+                    component: EventsComponent
+                },
+                {
+                    path: `${RouterService.BLOCK_URL}/:hashOrNumber`,
                     resolve: {
                         block: LedgerBlockResolver
                     },
                     component: BlockComponent
                 },
                 {
-                    path: `${RouterService.TRANSACTION_URL}/:hashOrUid`,
+                    path: `${RouterService.TRANSACTION_URL}/:hash`,
                     resolve: {
                         transaction: LedgerBlockTransactionResolver
                     },
                     component: TransactionComponent
+                },
+                {
+                    path: `${RouterService.EVENT_URL}/:uid`,
+                    resolve: {
+                        event: LedgerBlockEventResolver
+                    },
+                    component: EventComponent
                 }
             ]
         },
@@ -188,6 +207,8 @@ export const declarations: Array<any> = [
     RootComponent,
     BlockComponent,
     ShellComponent,
+    EventComponent,
+    EventsComponent,
     BlocksComponent,
     MessageComponent,
     DashboardComponent,
@@ -202,6 +223,12 @@ export const declarations: Array<any> = [
     LedgerTransactionLastComponent,
     LedgerTransactionsLastComponent,
     LedgerTransactionDetailsComponent,
+
+    LedgerEventComponent,
+    LedgerEventsComponent,
+    LedgerEventLastComponent,
+    LedgerEventsLastComponent,
+    LedgerEventDetailsComponent,
 
     LedgerBlocksComponent,
     LedgerBlockLastComponent,

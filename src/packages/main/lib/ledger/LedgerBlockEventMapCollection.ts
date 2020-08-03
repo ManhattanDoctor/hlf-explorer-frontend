@@ -1,11 +1,11 @@
 import { PaginableDataSourceMapCollection } from '@ts-core/common/map/dataSource';
-import { LedgerBlock } from '@hlf-explorer/common/ledger';
+import { LedgerBlock, LedgerBlockEvent } from '@hlf-explorer/common/ledger';
 import { Transport } from '@ts-core/common/transport';
 import { IPagination } from '@ts-core/common/dto';
 import { TransportHttpCommandAsync } from '@ts-core/common/transport/http';
 import { TransformUtil } from '@ts-core/common/util';
 
-export class LedgerBlockMapCollection extends PaginableDataSourceMapCollection<LedgerBlock, any> {
+export class LedgerBlockEventMapCollection extends PaginableDataSourceMapCollection<LedgerBlockEvent, any> {
     //--------------------------------------------------------------------------
     //
     // 	Constructor
@@ -13,8 +13,8 @@ export class LedgerBlockMapCollection extends PaginableDataSourceMapCollection<L
     //--------------------------------------------------------------------------
 
     constructor(private transport: Transport) {
-        super('hash');
-        this.sort.number = false;
+        super('uid');
+        this.sort.createdDate = false;
     }
 
     //--------------------------------------------------------------------------
@@ -28,10 +28,10 @@ export class LedgerBlockMapCollection extends PaginableDataSourceMapCollection<L
     }
 
     protected request(): Promise<IPagination<any>> {
-        return this.transport.sendListen(new TransportHttpCommandAsync(`ledger/blocks`, { data: this.createRequestData() }));
+        return this.transport.sendListen(new TransportHttpCommandAsync(`ledger/events`, { data: this.createRequestData() }));
     }
 
-    protected parseItem(item: any): LedgerBlock {
-        return TransformUtil.toClass(LedgerBlock, item);
+    protected parseItem(item: any): LedgerBlockEvent {
+        return TransformUtil.toClass(LedgerBlockEvent, item);
     }
 }

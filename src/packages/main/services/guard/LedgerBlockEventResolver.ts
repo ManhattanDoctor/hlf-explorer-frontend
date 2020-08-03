@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, Resolve } from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot, Resolve } from '@angular/router';
 import { Transport } from '@ts-core/common/transport';
 import * as _ from 'lodash';
-import { LedgerInfo, LedgerBlock } from '@hlf-explorer/common/ledger';
+import { LedgerBlockEvent } from '@hlf-explorer/common/ledger';
 import { RouterService } from '../RouterService';
 import { TransportHttpCommandAsync } from '@ts-core/common/transport/http';
-import { ILedgerBlockGetResponse } from '@hlf-explorer/common/api/ledger/block';
+import { ILedgerBlockTransactionGetResponse } from '@hlf-explorer/common/api/ledger/transaction';
 import { TransformUtil } from '@ts-core/common/util';
 import { WindowService } from '@ts-core/frontend-angular';
 
 @Injectable({ providedIn: 'root' })
-export class LedgerBlockResolver implements Resolve<LedgerBlock> {
+export class LedgerBlockEventResolver implements Resolve<LedgerBlockEvent> {
     // --------------------------------------------------------------------------
     //
     // 	Constructor
@@ -25,10 +25,10 @@ export class LedgerBlockResolver implements Resolve<LedgerBlock> {
     //
     // --------------------------------------------------------------------------
 
-    public async resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<LedgerBlock> {
-        let hashOrNumber = route.params.hashOrNumber;
-        if (_.isNil(hashOrNumber)) {
-            let message = `Block number or hash ${hashOrNumber} is invalid`;
+    public async resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<LedgerBlockEvent> {
+        let uid = route.params.uid;
+        if (_.isEmpty(uid)) {
+            let message = `Event uid ${uid} is invalid`;
             this.windows.info(message);
             this.router.navigate(RouterService.DEFAULT_URL);
             return Promise.reject(message);
@@ -36,9 +36,9 @@ export class LedgerBlockResolver implements Resolve<LedgerBlock> {
 
         try {
             let item = await this.transport.sendListen(
-                new TransportHttpCommandAsync<ILedgerBlockGetResponse>('ledger/block', { data: { hashOrNumber } })
+                new TransportHttpCommandAsync<ILedgerBlockTransactionGetResponse>('ledger/event', { data: { uid } })
             );
-            return TransformUtil.toClass(LedgerBlock, item.value);
+            return TransformUtil.toClass(LedgerBlockEvent, item.value);
         } catch (error) {
             this.router.navigate(RouterService.DEFAULT_URL);
             return Promise.reject(error.toString());

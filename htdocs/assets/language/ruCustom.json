@@ -5,7 +5,8 @@
     "tab": {
         "dashboard": "Главная",
         "blocks": "Блоки",
-        "transactions": "Транзакции"
+        "transactions": "Транзакции",
+        "events": "События"
     },
     "search": {
         "description": "Поиск..."
@@ -14,6 +15,8 @@
         "ledger": "Леджер",
         "blocks": "Блоки",
         "blocksLast": "Последние блоки",
+        "events": "События",
+        "eventsLast": "Последние события",
         "transactions": "Транзакции",
         "transactionsLast": "Последние транзакции",
         "status": {
@@ -25,22 +28,21 @@
         "block": "Блок",
         "rawData": "Сырой блок",
         "details": "Детализация",
-        "events": "Событий",
-        "transactions": "Транзакции",
         "number": "Номер",
         "hash": "Хеш",
         "createdDate": "Дата создания",
         "transaction": {
             "uid": "UID",
-            "name": "Команда",
             "hash": "Хеш в леджере",
             "transaction": "Транзакция",
+            "transactions": "Транзакции",
+            "createdDate": "⇛block.createdDate",
             "request": "Запрос",
             "response": "Ответ",
             "linkCommandId": "Основная команда",
             "error": "Ошибка",
             "userId": "Пользователь",
-            "algorithm": "Шифрование",
+            "algorithm": "Подпись",
             "status": {
                 "failed": "Ошибка",
                 "succeed": "Выполнена"
@@ -75,6 +77,14 @@
                 "254": "NOT_VALIDATED",
                 "255": "INVALID_OTHER_REASON"
             }
+        },
+        "event": {
+            "uid": "⇛block.transaction.uid",
+            "event": "Событие",
+            "events": "События",
+            "data": "Данные",
+            "transactionHash": "⇛block.transaction.transaction",
+            "createdDate": "⇛block.createdDate"
         }
     },
     "error": {

@@ -88,8 +88,8 @@ export class LedgerMonitorService extends Loadable<void, void> {
         for (let info of items) {
             this.ledgers.add(LedgerInfo.toClass(info));
         }
-        this.service.blocks.conditions.ledgerId = this.ledger.id;
-        this.service.transactions.conditions.ledgerId = this.ledger.id;
+        // this.service.blocks.conditions.ledgerId = this.ledger.id;
+        // this.service.transactions.conditions.ledgerId = this.ledger.id;
     };
 
     protected ledgerUpdatedHandler = (ledger: Partial<LedgerInfo>): void => {
@@ -102,6 +102,7 @@ export class LedgerMonitorService extends Loadable<void, void> {
 
         item.blockLast = block;
         item.blocksLast.add(block);
+        item.eventsLast.addItems(block.events);
         item.transactionsLast.addItems(block.transactions);
     };
 

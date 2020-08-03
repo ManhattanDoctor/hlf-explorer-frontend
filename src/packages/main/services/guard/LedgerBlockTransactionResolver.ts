@@ -26,9 +26,9 @@ export class LedgerBlockTransactionResolver implements Resolve<LedgerBlockTransa
     // --------------------------------------------------------------------------
 
     public async resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<LedgerBlockTransaction> {
-        let hashOrUid = route.params.hashOrUid;
-        if (_.isEmpty(hashOrUid)) {
-            let message = `Transaction hash or uid ${hashOrUid} is invalid`;
+        let hash = route.params.hash;
+        if (_.isEmpty(hash)) {
+            let message = `Transaction hash  ${hash} is invalid`;
             this.windows.info(message);
             this.router.navigate(RouterService.DEFAULT_URL);
             return Promise.reject(message);
@@ -36,7 +36,7 @@ export class LedgerBlockTransactionResolver implements Resolve<LedgerBlockTransa
 
         try {
             let item = await this.transport.sendListen(
-                new TransportHttpCommandAsync<ILedgerBlockTransactionGetResponse>('ledger/transaction', { data: { hashOrUid } })
+                new TransportHttpCommandAsync<ILedgerBlockTransactionGetResponse>('ledger/transaction', { data: { hash } })
             );
             return TransformUtil.toClass(LedgerBlockTransaction, item.value);
         } catch (error) {
