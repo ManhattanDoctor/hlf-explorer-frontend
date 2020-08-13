@@ -56,6 +56,10 @@ export class RouterService extends RouterBaseService {
         let value = _.isString(item) ? item : item.uid;
         this.navigate(`${RouterService.EVENT_URL}/${value}`);
     }
+
+    public eventsOpen(): void {
+        this.navigate(`${RouterService.EVENTS_URL}`);
+    }
     
     public transactionOpen(item: LedgerBlockTransaction | string): void {
         let value = _.isString(item) ? item : item.hash;

@@ -7,7 +7,7 @@
             </div>
 
             <div class="mat-nav-list">
-                <ledger-event-last [event]="item" *ngFor="let item of ledger?.eventsLast.collection;trackBy:ledger?.blocksLast.events?.trackByFn;last as isLast"
+                <ledger-event-last [event]="item" *ngFor="let item of ledger?.eventsLast.collection;trackBy:ledger?.blocksLast.trackByFn;last as isLast"
                     class="mat-list-item mouse-active p-3 border-bottom" [class.border-bottom-0]="isLast" (click)="router.eventOpen(item)"></ledger-event-last>
             </div>
 

@@ -22,11 +22,12 @@ import { Language, LanguageService } from '@ts-core/frontend/language';
 import { LoadingService, LoadingServiceManager, NativeWindowService } from '@ts-core/frontend/service';
 import { ThemeService } from '@ts-core/frontend/theme';
 import { takeUntil } from 'rxjs/operators';
-import { LedgerMonitorService } from '../../../services/LedgerMonitorService';
+import { LedgerApiMonitor } from '../../../services/LedgerApiMonitor';
 import { RouterService } from '../../../services/RouterService';
 import { SettingsService } from '../../../services/SettingsService';
 import { ShellService } from '../../../services/ShellService';
 import * as _ from 'lodash';
+import { LedgerApi } from '@hlf-explorer/common/api/ledger';
 
 @Component({
     selector: 'root',
@@ -47,14 +48,14 @@ export class RootComponent extends ApplicationComponent<SettingsService> {
         private notifications: NotificationService,
         public loading: LoadingService,
         private pipe: PipeBaseService,
-        private monitor: LedgerMonitorService,
+        private api: LedgerApi,
+        private monitor: LedgerApiMonitor,
         private nativeWindow: NativeWindowService,
         element: ElementRef,
         protected renderer: Renderer2,
         protected settings: SettingsService,
         protected language: LanguageService,
         protected theme: ThemeService,
-        @Inject(Transport) protected transport: TransportHttp
     ) {
         super(element, 0);
     }
@@ -77,7 +78,10 @@ export class RootComponent extends ApplicationComponent<SettingsService> {
         ViewUtil.addClasses(this.element, 'h-100 d-block');
         this.initializeObservers();
 
-        this.transport.settings.baseURL = this.settings.apiUrl;
+        this.api.url = this.settings.apiUrl;
+        this.api.settings.isHandleError = true;
+        this.api.settings.isHandleLoading = true;
+        
         this.theme.loadIfExist(this.settings.theme);
         this.language.loadIfExist(this.settings.language);
     }
@@ -85,10 +89,10 @@ export class RootComponent extends ApplicationComponent<SettingsService> {
     private initializeObservers(): void {
         let manager = this.addDestroyable(new LoadingServiceManager(this.loading));
         manager.addLoadable(this.language);
-        manager.addLoadable(this.transport);
         manager.addLoadable(this.monitor);
+        manager.addLoadable(this.api.http);
 
-        this.transport.events.pipe(takeUntil(this.destroyed)).subscribe(data => {
+        this.api.http.events.pipe(takeUntil(this.destroyed)).subscribe(data => {
             switch (data.type) {
                 case LoadableEvent.ERROR:
                     this.apiLoadingError(data.data as TransportHttpCommandAsync<any>);
@@ -114,18 +118,13 @@ export class RootComponent extends ApplicationComponent<SettingsService> {
         }
     }
 
-    protected languageLoadingComplete(item: Language): void {
-        this.transport.settings.headers.locale = item.locale;
-        super.languageLoadingComplete(item);
-    }
-
     protected languageLoadingError(item: Language, error: Error): void {
         let message = !_.isNil(error) ? error.message : `Unable to load language "${item.name}"`;
         this.router.navigate(`${RouterService.MESSAGE_URL}/${message}`);
     }
 
     protected readyHandler(): void {
-        this.monitor.connect();
+        this.api.connect();
     }
 
     //--------------------------------------------------------------------------

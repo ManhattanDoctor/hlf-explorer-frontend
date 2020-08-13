@@ -8,6 +8,7 @@ import { TransportHttpCommandAsync } from '@ts-core/common/transport/http';
 import { ILedgerBlockTransactionGetResponse } from '@hlf-explorer/common/api/ledger/transaction';
 import { TransformUtil } from '@ts-core/common/util';
 import { WindowService } from '@ts-core/frontend-angular';
+import { LedgerApi } from '../../../../common/api/ledger';
 
 @Injectable({ providedIn: 'root' })
 export class LedgerBlockEventResolver implements Resolve<LedgerBlockEvent> {
@@ -17,7 +18,7 @@ export class LedgerBlockEventResolver implements Resolve<LedgerBlockEvent> {
     //
     // --------------------------------------------------------------------------
 
-    constructor(private transport: Transport, private router: RouterService, private windows: WindowService) {}
+    constructor(private api: LedgerApi, private router: RouterService, private windows: WindowService) {}
 
     // --------------------------------------------------------------------------
     //
@@ -35,10 +36,7 @@ export class LedgerBlockEventResolver implements Resolve<LedgerBlockEvent> {
         }
 
         try {
-            let item = await this.transport.sendListen(
-                new TransportHttpCommandAsync<ILedgerBlockTransactionGetResponse>('ledger/event', { data: { uid } })
-            );
-            return TransformUtil.toClass(LedgerBlockEvent, item.value);
+            return await this.api.getEvent(uid);
         } catch (error) {
             this.router.navigate(RouterService.DEFAULT_URL);
             return Promise.reject(error.toString());

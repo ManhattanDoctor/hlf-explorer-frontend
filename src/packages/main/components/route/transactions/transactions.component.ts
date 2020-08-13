@@ -1,7 +1,6 @@
 import { Component, ElementRef } from '@angular/core';
 import { DestroyableContainer } from '@ts-core/common';
 import { ViewUtil } from '@ts-core/frontend-angular';
-import { LedgerMonitorService } from '../../../services/LedgerMonitorService';
 import { LedgerInfo } from '@hlf-explorer/common/ledger';
 import { LedgerBlockMapCollection } from '../../../lib/ledger/LedgerBlockMapCollection';
 import { LedgerService } from '../../../services/LedgerService';

@@ -1,10 +1,11 @@
 import { Component, ElementRef } from '@angular/core';
 import * as _ from 'lodash';
 import { Transport } from '@ts-core/common/transport';
-import { LedgerMonitorService } from '../../../services/LedgerMonitorService';
+import { LedgerApiMonitor } from '../../../services/LedgerApiMonitor';
 import { RouterService } from '../../../services/RouterService';
 import { SearchContainerBaseComponent } from '../SearchContainerBaseComponent';
 import { ViewUtil } from '@ts-core/frontend-angular';
+import { LedgerApi } from '@hlf-explorer/common/api/ledger';
 
 @Component({
     selector: 'search-container',
@@ -25,8 +26,8 @@ export class SearchContainerComponent extends SearchContainerBaseComponent {
     //
     //--------------------------------------------------------------------------
 
-    constructor(element: ElementRef, transport: Transport, router: RouterService, public monitor: LedgerMonitorService) {
-        super(element, transport, router);
+    constructor(element: ElementRef, router: RouterService, api: LedgerApi, public monitor: LedgerApiMonitor) {
+        super(element, router, api);
         ViewUtil.addClasses(element, 'd-flex background border rounded');
     }
 }

@@ -4,9 +4,10 @@ import { ViewUtil } from '@ts-core/frontend-angular';
 import * as _ from 'lodash';
 import { Transport } from '@ts-core/common/transport';
 import { TransportHttpCommandAsync } from '@ts-core/common/transport/http';
-import { ILedgerSearchResponse } from '@hlf-explorer/common/api/ledger';
+import { ILedgerSearchResponse, LedgerApi } from '@hlf-explorer/common/api/ledger';
 import { RouterService } from '../../services/RouterService';
 import { ObjectUtil } from '@ts-core/common/util';
+import { LedgerBlockTransaction, LedgerBlock, LedgerBlockEvent } from '../../../../common/ledger';
 
 export class SearchContainerBaseComponent extends Loadable {
     //--------------------------------------------------------------------------
@@ -23,7 +24,7 @@ export class SearchContainerBaseComponent extends Loadable {
     //
     //--------------------------------------------------------------------------
 
-    constructor(element: ElementRef, protected transport: Transport, protected router: RouterService) {
+    constructor(element: ElementRef, protected router: RouterService, protected api: LedgerApi) {
         super();
     }
 
@@ -40,13 +41,13 @@ export class SearchContainerBaseComponent extends Loadable {
 
         this.status = LoadableStatus.LOADING;
         try {
-            let item = await this.transport.sendListen(
-                new TransportHttpCommandAsync<ILedgerSearchResponse>('ledger/search', { data: { query: this.query } })
-            );
-            if (ObjectUtil.instanceOf(item.value, ['requestId', 'blockNumber'])) {
-                this.router.transactionOpen(item.value);
-            } else {
-                this.router.blockOpen(item.value);
+            let item = await this.api.search(this.query);
+            if (item instanceof LedgerBlock) {
+                this.router.blockOpen(item);
+            } else if (item instanceof LedgerBlockTransaction) {
+                this.router.transactionOpen(item);
+            } else if (item instanceof LedgerBlockEvent) {
+                this.router.eventOpen(item);
             }
         } finally {
             this.status = LoadableStatus.NOT_LOADED;

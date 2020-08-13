@@ -35,7 +35,7 @@ html,body
 	height: 78px;
 	width: 78px;
 	border-radius: 78px;
-	border: 3px solid #7b1fa2;
+	border: 3px solid #4dd0e1;
 	left: 35%;
 	left: calc(50% - 42px);
 	left: -o-calc(50% - 42px);
@@ -64,7 +64,7 @@ html,body
 	width: 11px;
 	height: 11px;
 	border-radius: 10px;
-	background-color: #7b1fa2;
+	background-color: #4dd0e1;
 }
 
 @keyframes cssload-ball{

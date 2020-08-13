@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Transport } from '@ts-core/common/transport';
 import { NotificationService, WindowService } from '@ts-core/frontend-angular';
 import { LanguageService } from '@ts-core/frontend/language';
 import { RouterService } from '../RouterService';
 import { ShellServiceBaseImpl } from './ShellServiceBaseImpl';
+import { LedgerApi } from '@hlf-explorer/common/api/ledger';
 
 @Injectable()
 export class ShellServiceImpl extends ShellServiceBaseImpl {
@@ -13,19 +13,7 @@ export class ShellServiceImpl extends ShellServiceBaseImpl {
     //
     //--------------------------------------------------------------------------
 
-    constructor(
-        transport: Transport,
-        windows: WindowService,
-        notifications: NotificationService,
-        language: LanguageService,
-        router: RouterService
-    ) {
-        super(transport, windows, notifications, language, router);
+    constructor(api: LedgerApi, windows: WindowService, notifications: NotificationService, language: LanguageService, router: RouterService) {
+        super(api, windows, notifications, language, router);
     }
-
-    //--------------------------------------------------------------------------
-    //
-    // 	Protected Methods
-    //
-    //--------------------------------------------------------------------------
 }

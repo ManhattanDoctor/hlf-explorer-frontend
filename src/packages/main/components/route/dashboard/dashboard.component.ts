@@ -1,7 +1,7 @@
 import { Component, ElementRef } from '@angular/core';
 import { DestroyableContainer } from '@ts-core/common';
 import { ViewUtil } from '@ts-core/frontend-angular';
-import { LedgerMonitorService } from '../../../services/LedgerMonitorService';
+import { LedgerApiMonitor } from '../../../services/LedgerApiMonitor';
 import { LedgerInfo } from '@hlf-explorer/common/ledger';
 
 @Component({
@@ -14,7 +14,7 @@ export class DashboardComponent extends DestroyableContainer {
     //
     //--------------------------------------------------------------------------
 
-    constructor(element: ElementRef, public monitor: LedgerMonitorService) {
+    constructor(element: ElementRef, public monitor: LedgerApiMonitor) {
         super();
         ViewUtil.addClasses(element, 'd-block');
     }

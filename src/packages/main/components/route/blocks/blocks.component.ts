@@ -4,7 +4,6 @@ import { ViewUtil } from '@ts-core/frontend-angular';
 import { LedgerService } from '../../../services/LedgerService';
 import { LedgerInfo } from '@hlf-explorer/common/ledger';
 import { LedgerBlockMapCollection } from '../../../lib/ledger/LedgerBlockMapCollection';
-import { LedgerMonitorService } from '../../../services/LedgerMonitorService';
 
 @Component({
     templateUrl: 'blocks.component.html'

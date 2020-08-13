@@ -3,7 +3,6 @@ import { DestroyableContainer } from '@ts-core/common';
 import { ViewUtil } from '@ts-core/frontend-angular';
 import { LedgerInfo } from '@hlf-explorer/common/ledger';
 import { RouterService } from '../../../../services/RouterService';
-import { LedgerMonitorService } from '../../../../services/LedgerMonitorService';
 
 @Component({
     selector: 'ledger-blocks-last',

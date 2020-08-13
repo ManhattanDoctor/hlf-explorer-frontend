@@ -1,13 +1,10 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, Resolve } from '@angular/router';
-import { Transport } from '@ts-core/common/transport';
+import { ActivatedRouteSnapshot, RouterStateSnapshot, Resolve } from '@angular/router';
 import * as _ from 'lodash';
-import { LedgerInfo, LedgerBlock } from '@hlf-explorer/common/ledger';
+import { LedgerBlock } from '@hlf-explorer/common/ledger';
 import { RouterService } from '../RouterService';
-import { TransportHttpCommandAsync } from '@ts-core/common/transport/http';
-import { ILedgerBlockGetResponse } from '@hlf-explorer/common/api/ledger/block';
-import { TransformUtil } from '@ts-core/common/util';
 import { WindowService } from '@ts-core/frontend-angular';
+import { LedgerApi } from '@hlf-explorer/common/api/ledger';
 
 @Injectable({ providedIn: 'root' })
 export class LedgerBlockResolver implements Resolve<LedgerBlock> {
@@ -17,7 +14,7 @@ export class LedgerBlockResolver implements Resolve<LedgerBlock> {
     //
     // --------------------------------------------------------------------------
 
-    constructor(private transport: Transport, private router: RouterService, private windows: WindowService) {}
+    constructor(private api: LedgerApi, private router: RouterService, private windows: WindowService) {}
 
     // --------------------------------------------------------------------------
     //
@@ -35,10 +32,7 @@ export class LedgerBlockResolver implements Resolve<LedgerBlock> {
         }
 
         try {
-            let item = await this.transport.sendListen(
-                new TransportHttpCommandAsync<ILedgerBlockGetResponse>('ledger/block', { data: { hashOrNumber } })
-            );
-            return TransformUtil.toClass(LedgerBlock, item.value);
+            return await this.api.getBlock(hashOrNumber);
         } catch (error) {
             this.router.navigate(RouterService.DEFAULT_URL);
             return Promise.reject(error.toString());

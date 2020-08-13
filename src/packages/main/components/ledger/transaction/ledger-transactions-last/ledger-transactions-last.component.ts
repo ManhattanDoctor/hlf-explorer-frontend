@@ -52,7 +52,6 @@ export class LedgerTransactionsLastComponent extends DestroyableContainer {
             return;
         }
         this._ledger = value;
-
         if (this._ledger) {
             this.commitLedgerProperties();
         }

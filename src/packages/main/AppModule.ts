@@ -36,7 +36,9 @@ import {
     RouterBaseService,
     UserBaseService,
     VICommonModule,
-    VIComponentModule
+    VIComponentModule,
+    WindowService,
+    NotificationService
 } from '@ts-core/frontend-angular';
 import { SettingsBaseService } from '@ts-core/frontend/service';
 import { TextContainerComponent } from './components/common/text-container/text-container.component';
@@ -64,19 +66,20 @@ import { LedgerEventDetailsComponent } from './components/ledger/event/ledger-ev
 import { LedgerTransactionLastComponent } from './components/ledger/transaction/ledger-transaction-last/ledger-transaction-last.component';
 import { LedgerBlockLastComponent } from './components/ledger/block/ledger-block-last/ledger-block-last.component';
 import { LedgerBlocksComponent } from './components/ledger/block/ledger-blocks/ledger-blocks.component';
-import { LedgerMonitorService } from './services/LedgerMonitorService';
+import { LedgerApiMonitor } from './services/LedgerApiMonitor';
 import { LedgerService } from './services/LedgerService';
 import { PipeService } from './services/PipeService';
 import { RouterService } from './services/RouterService';
 import { SettingsService } from './services/SettingsService';
 import { PrettifyPipe } from './services/pipe/PrettifyPipe';
 import { LedgerBlockResolver } from './services/guard/LedgerBlockResolver';
-import { LedgerMonitorResolver } from './services/guard/LedgerMonitorResolver';
+import { LedgerApiResolver } from './services/guard/LedgerApiResolver';
 import { LedgerBlockEventResolver } from './services/guard/LedgerBlockEventResolver';
 import { LedgerBlockTransactionResolver } from './services/guard/LedgerBlockTransactionResolver';
 import { ShellServiceImpl } from './services/shell/ShellServiceImpl';
 import { ShellService } from './services/ShellService';
 import { LedgerBlockDetailsComponent } from './components/ledger/block/ledger-block-details/ledger-block-details.component';
+import { LedgerApi } from '@hlf-explorer/common/api/ledger';
 
 export const imports: any[] = [
     BrowserModule,
@@ -112,7 +115,7 @@ export const imports: any[] = [
             path: '',
             resolve: {
                 language: LanguageResolver,
-                socket: LedgerMonitorResolver
+                api: LedgerApiResolver
             },
             component: ShellComponent,
             children: [
@@ -173,10 +176,8 @@ export const providers: any[] = [
     LedgerService,
     SettingsService,
 
+    LedgerApiResolver,
     LedgerBlockResolver,
-    LedgerMonitorResolver,
-
-    LedgerMonitorService,
 
     {
         provide: MAT_TOOLTIP_DEFAULT_OPTIONS,
@@ -193,8 +194,13 @@ export const providers: any[] = [
         deps: [Logger],
         useFactory: transportServiceFactory
     },
+    {
+        provide: LedgerApiMonitor,
+        deps: [Logger, WindowService, NotificationService],
+        useFactory: ledgerMonitorApiFactory
+    },
 
-    { provide: Transport, useExisting: TransportHttp },
+    { provide: LedgerApi, useExisting: LedgerApiMonitor },
     { provide: ShellService, useClass: ShellServiceImpl },
     { provide: PipeBaseService, useExisting: PipeService },
     { provide: RouterBaseService, useExisting: RouterService },
@@ -266,6 +272,10 @@ export class AppModule {
         APPLICATION_INJECTOR(this.injector);
         applicationRef.bootstrap(RootComponent);
     }
+}
+
+export function ledgerMonitorApiFactory(logger: ILogger, windows: WindowService, notifications: NotificationService): LedgerApi {
+    return new LedgerApiMonitor(logger, windows, notifications);
 }
 
 export function transportServiceFactory(logger: ILogger): Transport {

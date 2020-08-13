@@ -6,6 +6,4 @@ export abstract class ShellService {
     //--------------------------------------------------------------------------
 
     public abstract textOpen(text: string): void;
-
-    public abstract blockOpen(ledgerId: number, height: number): Promise<void>;
 }

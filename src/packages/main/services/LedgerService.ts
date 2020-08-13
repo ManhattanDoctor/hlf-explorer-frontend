@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { DestroyableContainer, LoadableEvent } from '@ts-core/common';
-import { Transport } from '@ts-core/common/transport';
-import { UserBaseServiceEvent } from '@ts-core/frontend-angular';
 import { LanguageService } from '@ts-core/frontend/language';
 import { LedgerBlockMapCollection } from '../lib/ledger/LedgerBlockMapCollection';
 import { LedgerBlockTransactionMapCollection } from '../lib/ledger/LedgerBlockTransactionMapCollection';
 import { LedgerBlockEventMapCollection } from '../lib/ledger/LedgerBlockEventMapCollection';
+import { LedgerApi } from '@hlf-explorer/common/api/ledger';
 
 @Injectable()
 export class LedgerService extends DestroyableContainer {
@@ -25,12 +24,12 @@ export class LedgerService extends DestroyableContainer {
     //
     //--------------------------------------------------------------------------
 
-    constructor(private transport: Transport, language: LanguageService) {
+    constructor(private api: LedgerApi, language: LanguageService) {
         super();
 
-        this._blocks = new LedgerBlockMapCollection(transport);
-        this._events = new LedgerBlockEventMapCollection(transport);
-        this._transactions = new LedgerBlockTransactionMapCollection(transport);
+        this._blocks = new LedgerBlockMapCollection(api);
+        this._events = new LedgerBlockEventMapCollection(api);
+        this._transactions = new LedgerBlockTransactionMapCollection(api);
 
         // Language
         if (language.isLoaded) {
@@ -58,7 +57,7 @@ export class LedgerService extends DestroyableContainer {
     public get events(): LedgerBlockEventMapCollection {
         return this._events;
     }
-    
+
     public get transactions(): LedgerBlockTransactionMapCollection {
         return this._transactions;
     }

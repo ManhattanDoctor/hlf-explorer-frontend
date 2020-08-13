@@ -8,6 +8,7 @@ import { TransportHttpCommandAsync } from '@ts-core/common/transport/http';
 import { ILedgerBlockTransactionGetResponse } from '@hlf-explorer/common/api/ledger/transaction';
 import { TransformUtil } from '@ts-core/common/util';
 import { WindowService } from '@ts-core/frontend-angular';
+import { LedgerApi } from '@hlf-explorer/common/api/ledger';
 
 @Injectable({ providedIn: 'root' })
 export class LedgerBlockTransactionResolver implements Resolve<LedgerBlockTransaction> {
@@ -17,7 +18,7 @@ export class LedgerBlockTransactionResolver implements Resolve<LedgerBlockTransa
     //
     // --------------------------------------------------------------------------
 
-    constructor(private transport: Transport, private router: RouterService, private windows: WindowService) {}
+    constructor(private api: LedgerApi, private router: RouterService, private windows: WindowService) {}
 
     // --------------------------------------------------------------------------
     //
@@ -35,10 +36,7 @@ export class LedgerBlockTransactionResolver implements Resolve<LedgerBlockTransa
         }
 
         try {
-            let item = await this.transport.sendListen(
-                new TransportHttpCommandAsync<ILedgerBlockTransactionGetResponse>('ledger/transaction', { data: { hash } })
-            );
-            return TransformUtil.toClass(LedgerBlockTransaction, item.value);
+            return await this.api.getTransaction(hash);
         } catch (error) {
             this.router.navigate(RouterService.DEFAULT_URL);
             return Promise.reject(error.toString());

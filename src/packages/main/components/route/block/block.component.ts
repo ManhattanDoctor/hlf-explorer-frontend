@@ -1,7 +1,6 @@
 import { Component, ElementRef } from '@angular/core';
 import { DestroyableContainer } from '@ts-core/common';
 import { ViewUtil } from '@ts-core/frontend-angular';
-import { LedgerMonitorService } from '../../../services/LedgerMonitorService';
 import { ActivatedRouteSnapshot, RouterStateSnapshot, ActivatedRoute } from '@angular/router';
 import { LedgerBlock } from '@hlf-explorer/common/ledger';
 
@@ -17,7 +16,6 @@ export class BlockComponent extends DestroyableContainer {
 
     constructor(element: ElementRef, private route: ActivatedRoute) {
         super();
-
         ViewUtil.addClasses(element, 'd-block');
     }
 
