@@ -79,7 +79,7 @@ import { LedgerBlockTransactionResolver } from './services/guard/LedgerBlockTran
 import { ShellServiceImpl } from './services/shell/ShellServiceImpl';
 import { ShellService } from './services/ShellService';
 import { LedgerBlockDetailsComponent } from './components/ledger/block/ledger-block-details/ledger-block-details.component';
-import { LedgerApi } from '@hlf-explorer/common/api/ledger';
+import { LedgerApi } from '@hlf-explorer/common/api';
 
 export const imports: any[] = [
     BrowserModule,
@@ -195,12 +195,16 @@ export const providers: any[] = [
         useFactory: transportServiceFactory
     },
     {
+        provide: LedgerApi,
+        deps: [Logger],
+        useFactory: ledgerApiFactory
+    },
+    {
         provide: LedgerApiMonitor,
-        deps: [Logger, WindowService, NotificationService],
-        useFactory: ledgerMonitorApiFactory
+        deps: [Logger, LedgerApi, WindowService, NotificationService],
+        useFactory: ledgerApiMonitorFactory
     },
 
-    { provide: LedgerApi, useExisting: LedgerApiMonitor },
     { provide: ShellService, useClass: ShellServiceImpl },
     { provide: PipeBaseService, useExisting: PipeService },
     { provide: RouterBaseService, useExisting: RouterService },
@@ -274,8 +278,12 @@ export class AppModule {
     }
 }
 
-export function ledgerMonitorApiFactory(logger: ILogger, windows: WindowService, notifications: NotificationService): LedgerApi {
-    return new LedgerApiMonitor(logger, windows, notifications);
+export function ledgerApiFactory(logger: ILogger): LedgerApi {
+    return new LedgerApi(logger);
+}
+
+export function ledgerApiMonitorFactory(logger: ILogger, api: LedgerApi, windows: WindowService, notifications: NotificationService): LedgerApiMonitor {
+    return new LedgerApiMonitor(logger, api, windows, notifications);
 }
 
 export function transportServiceFactory(logger: ILogger): Transport {

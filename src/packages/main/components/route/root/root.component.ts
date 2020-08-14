@@ -27,7 +27,7 @@ import { RouterService } from '../../../services/RouterService';
 import { SettingsService } from '../../../services/SettingsService';
 import { ShellService } from '../../../services/ShellService';
 import * as _ from 'lodash';
-import { LedgerApi } from '@hlf-explorer/common/api/ledger';
+import { LedgerApi, LedgerApiSocket } from '@hlf-explorer/common/api';
 
 @Component({
     selector: 'root',
@@ -55,7 +55,7 @@ export class RootComponent extends ApplicationComponent<SettingsService> {
         protected renderer: Renderer2,
         protected settings: SettingsService,
         protected language: LanguageService,
-        protected theme: ThemeService,
+        protected theme: ThemeService
     ) {
         super(element, 0);
     }
@@ -78,10 +78,10 @@ export class RootComponent extends ApplicationComponent<SettingsService> {
         ViewUtil.addClasses(this.element, 'h-100 d-block');
         this.initializeObservers();
 
-        this.api.url = this.settings.apiUrl;
+        this.api.url = this.monitor.url = this.settings.apiUrl;
         this.api.settings.isHandleError = true;
         this.api.settings.isHandleLoading = true;
-        
+
         this.theme.loadIfExist(this.settings.theme);
         this.language.loadIfExist(this.settings.language);
     }
@@ -124,7 +124,7 @@ export class RootComponent extends ApplicationComponent<SettingsService> {
     }
 
     protected readyHandler(): void {
-        this.api.connect();
+        this.monitor.connect();
     }
 
     //--------------------------------------------------------------------------

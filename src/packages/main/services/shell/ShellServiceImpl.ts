@@ -3,7 +3,7 @@ import { NotificationService, WindowService } from '@ts-core/frontend-angular';
 import { LanguageService } from '@ts-core/frontend/language';
 import { RouterService } from '../RouterService';
 import { ShellServiceBaseImpl } from './ShellServiceBaseImpl';
-import { LedgerApi } from '@hlf-explorer/common/api/ledger';
+import { LedgerApi } from '@hlf-explorer/common/api';
 
 @Injectable()
 export class ShellServiceImpl extends ShellServiceBaseImpl {

@@ -3,7 +3,7 @@ import { LanguageService } from '@ts-core/frontend/language';
 import { TextContainerComponent } from '../../components/common/text-container/text-container.component';
 import { RouterService } from '../RouterService';
 import { ShellService } from '../ShellService';
-import { LedgerApi } from '@hlf-explorer/common/api/ledger';
+import { LedgerApi } from '@hlf-explorer/common/api';
 
 export class ShellServiceBaseImpl extends ShellService {
     //--------------------------------------------------------------------------

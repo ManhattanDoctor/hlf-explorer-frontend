@@ -1,7 +1,7 @@
 import { PaginableDataSourceMapCollection } from '@ts-core/common/map/dataSource';
 import { LedgerBlock } from '@hlf-explorer/common/ledger';
 import { IPagination } from '@ts-core/common/dto';
-import { LedgerApi } from '@hlf-explorer/common/api/ledger';
+import { LedgerApi } from '@hlf-explorer/common/api';
 
 export class LedgerBlockMapCollection extends PaginableDataSourceMapCollection<LedgerBlock, LedgerBlock> {
     //--------------------------------------------------------------------------

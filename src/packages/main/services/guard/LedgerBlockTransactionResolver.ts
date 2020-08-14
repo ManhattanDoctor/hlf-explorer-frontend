@@ -1,14 +1,10 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, RouterStateSnapshot, Resolve } from '@angular/router';
-import { Transport } from '@ts-core/common/transport';
 import * as _ from 'lodash';
 import { LedgerBlockTransaction } from '@hlf-explorer/common/ledger';
 import { RouterService } from '../RouterService';
-import { TransportHttpCommandAsync } from '@ts-core/common/transport/http';
-import { ILedgerBlockTransactionGetResponse } from '@hlf-explorer/common/api/ledger/transaction';
-import { TransformUtil } from '@ts-core/common/util';
 import { WindowService } from '@ts-core/frontend-angular';
-import { LedgerApi } from '@hlf-explorer/common/api/ledger';
+import { LedgerApi } from '@hlf-explorer/common/api';
 
 @Injectable({ providedIn: 'root' })
 export class LedgerBlockTransactionResolver implements Resolve<LedgerBlockTransaction> {

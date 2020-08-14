@@ -4,7 +4,7 @@ import { PromiseHandler } from '@ts-core/common/promise';
 import { Injectable } from '@angular/core';
 import { RouterService } from '../RouterService';
 import * as _ from 'lodash';
-import { LedgerApi } from '@hlf-explorer/common/api/ledger';
+import { LedgerApiMonitor } from '../LedgerApiMonitor';
 
 @Injectable()
 export class LedgerApiResolver extends DestroyableContainer implements Resolve<void> {
@@ -14,7 +14,7 @@ export class LedgerApiResolver extends DestroyableContainer implements Resolve<v
     //
     // --------------------------------------------------------------------------
 
-    constructor(private router: RouterService, private api: LedgerApi) {
+    constructor(private router: RouterService, private monitor: LedgerApiMonitor) {
         super();
     }
 
@@ -25,16 +25,16 @@ export class LedgerApiResolver extends DestroyableContainer implements Resolve<v
     // --------------------------------------------------------------------------
 
     public resolve(): Promise<void> {
-        if (this.api.isLoaded) {
+        if (this.monitor.isLoaded) {
             return Promise.resolve();
         }
 
         let promise = PromiseHandler.create();
-        let subscription = this.api.events.subscribe(data => {
+        let subscription = this.monitor.events.subscribe(data => {
             if (data.type === LoadableEvent.COMPLETE) {
                 promise.resolve();
             } else if (data.type === LoadableEvent.ERROR) {
-                let message = `Unable to connect to socket ${this.api.url}`;
+                let message = `Unable to connect to socket ${this.monitor.url}`;
                 if (!_.isNil(data.error)) {
                     message += ` ${data.error.message}`;
                 }
