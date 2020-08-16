@@ -3,6 +3,8 @@ import { LedgerApiSocket, LedgerApi } from '@hlf-explorer/common/api';
 import { LedgerInfo } from '@hlf-explorer/common/ledger';
 import * as _ from 'lodash';
 import { ILogger } from '@ts-core/common/logger';
+import { LoadableEvent } from '@ts-core/common';
+import { filter, takeUntil } from 'rxjs/operators';
 
 export class LedgerApiMonitor extends LedgerApiSocket {
     // --------------------------------------------------------------------------
@@ -21,6 +23,21 @@ export class LedgerApiMonitor extends LedgerApiSocket {
 
     constructor(logger: ILogger, private api: LedgerApi, private windows: WindowService, private notifications: NotificationService) {
         super(logger, LedgerApiMonitor.LEDGER_NAME);
+
+        this.events
+            .pipe(filter(event => event.type === LoadableEvent.COMPLETE))
+            .pipe(takeUntil(this.destroyed))
+            .subscribe(() => this.notifications.remove(this.socketDisconnectNotificationId));
+
+        this.events
+            .pipe(filter(event => event.type === LoadableEvent.ERROR && !this.notifications.has(this.socketDisconnectNotificationId)))
+            .pipe(takeUntil(this.destroyed))
+            .subscribe(async event => {
+                await this.notifications.question('error.socketDisconnected', { error: event.data }, null, {
+                    id: this.socketDisconnectNotificationId
+                }).yesNotPromise;
+                this.connect();
+            });
     }
 
     //--------------------------------------------------------------------------
@@ -36,20 +53,6 @@ export class LedgerApiMonitor extends LedgerApiSocket {
             this.api.settings.defaultLedgerId = this.ledger.id;
         } else {
             this.windows.info('error.noLedger', { name: LedgerApiMonitor.LEDGER_NAME });
-        }
-    }
-
-    protected socketConnectedHandler(): void {
-        super.socketConnectedHandler();
-        this.notifications.remove(this.socketDisconnectNotificationId);
-    }
-
-    protected socketDisconnectedHandler(): void {
-        super.socketDisconnectedHandler();
-        if (!this.notifications.has(this.socketDisconnectNotificationId)) {
-            this.notifications
-                .question('error.socketDisconnected', null, null, { id: this.socketDisconnectNotificationId })
-                .yesNotPromise.then(() => this.connect());
         }
     }
 

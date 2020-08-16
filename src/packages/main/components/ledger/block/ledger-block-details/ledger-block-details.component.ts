@@ -1,6 +1,6 @@
 import { Component, ViewContainerRef, Input } from '@angular/core';
 import { ViewUtil, IWindowContent } from '@ts-core/frontend-angular';
-import { LedgerBlock } from '@hlf-explorer/common/ledger';
+import { LedgerBlock, LedgerBlockEvent, LedgerBlockTransaction } from '@hlf-explorer/common/ledger';
 import { TextHighlightUtil } from '../../../../lib/util/TextHighlightUtil';
 import { TransformUtil } from '@ts-core/common/util';
 import * as _ from 'lodash';
@@ -20,8 +20,8 @@ export class LedgerBlockDetailsComponent extends IWindowContent {
     //--------------------------------------------------------------------------
 
     public rawText: string;
-    public blockEvents: MapCollection<ITransportFabricEvent>;
-    public blockTransactions: MapCollection<ITransportFabricTransaction>;
+    public blockEvents: MapCollection<LedgerBlockEvent>;
+    public blockTransactions: MapCollection<LedgerBlockTransaction>;
 
     private _block: LedgerBlock;
 
@@ -40,8 +40,8 @@ export class LedgerBlockDetailsComponent extends IWindowContent {
 
         let mode = this.router.getParam<Mode>('tab', Mode.DETAILS);
         this.mode = mode in Mode ? mode : Mode.DETAILS;
-        this.blockEvents = new MapCollection('transactionHash');
-        this.blockTransactions = new MapCollection('hash');
+        this.blockEvents = new MapCollection('uid');
+        this.blockTransactions = new MapCollection('uid');
     }
 
     //--------------------------------------------------------------------------
