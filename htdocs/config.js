@@ -8,7 +8,7 @@
     config.languages = 'en|English;ru|Русский';
     config.assetsUrl = 'assets/';
     
-    config.apiUrl = 'http://localhost:3001';
+    config.apiUrl = 'http://localhost:33000';
 
     config.theme = 'dark';
     config.themes = [

@@ -1,5 +1,5 @@
 import { WindowService, NotificationService } from '@ts-core/frontend-angular';
-import { LedgerApiSocket, LedgerApi } from '@hlf-explorer/common/api';
+import { LedgerApiSocket, LedgerApi, LedgerSocketEvent } from '@hlf-explorer/common/api';
 import { LedgerInfo } from '@hlf-explorer/common/ledger';
 import * as _ from 'lodash';
 import { ILogger } from '@ts-core/common/logger';
@@ -38,22 +38,17 @@ export class LedgerApiMonitor extends LedgerApiSocket {
                 }).yesNotPromise;
                 this.connect();
             });
-    }
 
-    //--------------------------------------------------------------------------
-    //
-    //  Event Handlers
-    //
-    //--------------------------------------------------------------------------
-
-    protected ledgerListReceivedHandler(items: Array<LedgerInfo>): void {
-        super.ledgerListReceivedHandler(items);
-
-        if (!_.isNil(this.ledger)) {
-            this.api.settings.defaultLedgerId = this.ledger.id;
-        } else {
-            this.windows.info('error.noLedger', { name: LedgerApiMonitor.LEDGER_NAME });
-        }
+        this.events
+            .pipe(filter(event => event.type === LedgerSocketEvent.LEDGER_FILTERED))
+            .pipe(takeUntil(this.destroyed))
+            .subscribe(event => {
+                if (!_.isNil(event.data)) {
+                    this.api.settings.defaultLedgerId = this.ledger.id;
+                } else {
+                    this.windows.info('error.noLedger', { name: LedgerApiMonitor.LEDGER_NAME });
+                }
+            });
     }
 
     //--------------------------------------------------------------------------

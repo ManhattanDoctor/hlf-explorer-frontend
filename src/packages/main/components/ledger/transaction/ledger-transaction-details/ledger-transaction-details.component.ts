@@ -1,11 +1,9 @@
 import { Component, ViewContainerRef, Input } from '@angular/core';
 import { ViewUtil, IWindowContent } from '@ts-core/frontend-angular';
 import { LedgerBlockTransaction } from '@hlf-explorer/common/ledger';
-import { TextHighlightUtil } from '../../../../lib/util/TextHighlightUtil';
 import * as _ from 'lodash';
 import { RouterService } from '../../../../services/RouterService';
 import { PipeService } from '../../../../services/PipeService';
-import { FabricTransactionValidationCode } from '@ts-core/blockchain-fabric/api/IFabricTransaction';
 import { ExtendedError } from '@ts-core/common/error';
 import { LedgerBlockTransactionWrapper } from '../../../../lib/ledger/LedgerBlockTransactionWrapper';
 

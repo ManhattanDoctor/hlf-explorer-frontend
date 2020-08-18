@@ -2,10 +2,8 @@ import { Component, ViewContainerRef, Input } from '@angular/core';
 import { ViewUtil, IWindowContent } from '@ts-core/frontend-angular';
 import { LedgerBlock, LedgerBlockEvent, LedgerBlockTransaction } from '@hlf-explorer/common/ledger';
 import { TextHighlightUtil } from '../../../../lib/util/TextHighlightUtil';
-import { TransformUtil } from '@ts-core/common/util';
 import * as _ from 'lodash';
 import { MapCollection } from '@ts-core/common/map';
-import { ITransportFabricTransaction, ITransportFabricEvent } from '@ts-core/blockchain-fabric/transport/block';
 import { RouterService } from '../../../../services/RouterService';
 
 @Component({

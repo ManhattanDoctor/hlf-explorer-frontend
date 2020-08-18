@@ -75,8 +75,8 @@ export class LedgerBlockTransactionWrapper extends LedgerBlockTransaction {
     }
 
     public get requestAlgorithm(): any {
-        return !_.isNil(this.request) && !_.isNil(this.request.options) && !_.isNil(this.request.options.signature)
-            ? this.request.options.signature.algorithm
+        return !_.isNil(this.request) && !_.isNil(this.request.options) && !_.isNil((this.request.options as any).signature)
+            ? (this.request.options as any).signature.algorithm
             : null;
     }
 

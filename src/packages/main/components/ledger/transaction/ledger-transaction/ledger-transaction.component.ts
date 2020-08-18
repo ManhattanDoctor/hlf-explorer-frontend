@@ -1,14 +1,11 @@
-import { Component, ViewContainerRef, ElementRef, Input } from '@angular/core';
+import { Component, ElementRef, Input } from '@angular/core';
 import { DestroyableContainer } from '@ts-core/common';
-import { PipeBaseService, ViewUtil, WindowService } from '@ts-core/frontend-angular';
-import { LedgerInfo, LedgerBlock, LedgerBlockTransaction } from '@hlf-explorer/common/ledger';
-import { ITransportFabricTransaction } from '@ts-core/blockchain-fabric/transport/block';
-import { FabricTransactionValidationCode } from '@ts-core/blockchain-fabric/api/IFabricTransaction';
+import { ViewUtil } from '@ts-core/frontend-angular';
+import { LedgerBlockTransaction } from '@hlf-explorer/common/ledger';
 import { PipeService } from '../../../../services/PipeService';
 import { LedgerBlockTransactionWrapper } from '../../../../lib/ledger/LedgerBlockTransactionWrapper';
 import * as _ from 'lodash';
 import { TextHighlightUtil } from '../../../../lib/util/TextHighlightUtil';
-import { ExtendedError } from '@ts-core/common/error';
 
 @Component({
     selector: 'ledger-transaction',
@@ -86,21 +83,6 @@ export class LedgerTransactionComponent extends DestroyableContainer {
         }
     }
 
-    //--------------------------------------------------------------------------
-    //
-    // 	Private Methods
-    //
-    //--------------------------------------------------------------------------
-
-    private parseJSON(data: any): string {
-        if (_.isObject(data)) {
-            data = JSON.stringify(data, null, 2);
-            data = TextHighlightUtil.text(data);
-            return data;
-        } else {
-            return TextHighlightUtil.text(data.toString());
-        }
-    }
 
     //--------------------------------------------------------------------------
     //
