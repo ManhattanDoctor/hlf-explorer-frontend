@@ -95,12 +95,7 @@ export class RootComponent extends ApplicationComponent<SettingsService> {
             .pipe(map(<T>(event) => event.data as TransportHttpCommandAsync<T>))
             .pipe(takeUntil(this.destroyed))
             .subscribe(data => this.apiLoadingError(data));
-
-        // User
-        this.redirect();
     }
-
-    private async redirect(): Promise<void> {}
 
     //--------------------------------------------------------------------------
     //

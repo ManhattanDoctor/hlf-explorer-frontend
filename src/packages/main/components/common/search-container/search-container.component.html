@@ -4,8 +4,7 @@
         <mat-label [innerHTML]="'search.description' | viTranslate"></mat-label>
         <span class="fas ml-3" matSuffix [ngClass]="{'fa-link text-primary' : monitor.isLoaded, 'fa-unlink text-danger' : !monitor.isLoaded}"
             [matTooltip]="(monitor.isLoaded? 'ledger.status.connected' : 'ledger.status.disconnected') | viTranslatePure"></span>
-        <input #queryInput="ngModel" matInput name="query" [(ngModel)]="query"
-            [disabled]="isLoading">
+        <input #queryInput="ngModel" matInput name="query" [(ngModel)]="query" [disabled]="isLoading">
         <mat-error *ngIf="!(queryInput.valid || !queryInput.touched)" [innerHTML]="queryInput.errors | viNgModelError"></mat-error>
     </mat-form-field>
 </form>
