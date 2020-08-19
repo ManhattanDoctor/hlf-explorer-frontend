@@ -9,6 +9,7 @@
     config.assetsUrl = 'assets/';
     
     config.apiUrl = 'http://localhost:33000';
+    config.ledgerName = 'Karma';
 
     config.theme = 'dark';
     config.themes = [

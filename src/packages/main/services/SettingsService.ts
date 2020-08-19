@@ -13,4 +13,14 @@ export class SettingsService extends SettingsBaseService {
     constructor(private cookies: CookieService) {
         super();
     }
+
+    //--------------------------------------------------------------------------
+    //
+    // 	Public Properties
+    //
+    //--------------------------------------------------------------------------
+
+    public get ledgerName(): string {
+        return this.getValue('ledgerName');
+    }
 }

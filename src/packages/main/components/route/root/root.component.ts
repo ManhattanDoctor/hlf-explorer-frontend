@@ -1,7 +1,6 @@
 import { Component, ElementRef, Inject, Renderer2 } from '@angular/core';
 import { LoadableEvent } from '@ts-core/common';
-import { Transport } from '@ts-core/common/transport';
-import { TransportHttp, TransportHttpCommandAsync } from '@ts-core/common/transport/http';
+import { TransportHttpCommandAsync } from '@ts-core/common/transport/http';
 import {
     ApplicationComponent,
     LoginResolver,
@@ -21,13 +20,13 @@ import {
 import { Language, LanguageService } from '@ts-core/frontend/language';
 import { LoadingService, LoadingServiceManager, NativeWindowService } from '@ts-core/frontend/service';
 import { ThemeService } from '@ts-core/frontend/theme';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, filter, map } from 'rxjs/operators';
 import { LedgerApiMonitor } from '../../../services/LedgerApiMonitor';
 import { RouterService } from '../../../services/RouterService';
 import { SettingsService } from '../../../services/SettingsService';
 import { ShellService } from '../../../services/ShellService';
 import * as _ from 'lodash';
-import { LedgerApi, LedgerApiSocket } from '@hlf-explorer/common/api';
+import { LedgerApi } from '@hlf-explorer/common/api';
 
 @Component({
     selector: 'root',
@@ -79,8 +78,7 @@ export class RootComponent extends ApplicationComponent<SettingsService> {
         this.initializeObservers();
 
         this.api.url = this.monitor.url = this.settings.apiUrl;
-        this.api.settings.isHandleError = true;
-        this.api.settings.isHandleLoading = true;
+        this.api.settings.defaultLedgerName = this.monitor.settings.defaultLedgerName = this.settings.ledgerName;
 
         this.theme.loadIfExist(this.settings.theme);
         this.language.loadIfExist(this.settings.language);
@@ -92,13 +90,11 @@ export class RootComponent extends ApplicationComponent<SettingsService> {
         manager.addLoadable(this.monitor);
         manager.addLoadable(this.api.http);
 
-        this.api.http.events.pipe(takeUntil(this.destroyed)).subscribe(data => {
-            switch (data.type) {
-                case LoadableEvent.ERROR:
-                    this.apiLoadingError(data.data as TransportHttpCommandAsync<any>);
-                    break;
-            }
-        });
+        this.api.http.events
+            .pipe(filter(event => event.type === LoadableEvent.ERROR))
+            .pipe(map(<T>(event) => event.data as TransportHttpCommandAsync<T>))
+            .pipe(takeUntil(this.destroyed))
+            .subscribe(data => this.apiLoadingError(data));
 
         // User
         this.redirect();

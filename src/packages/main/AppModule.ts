@@ -27,7 +27,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { ILogger, Logger } from '@ts-core/common/logger';
 import { Transport } from '@ts-core/common/transport';
-import { TransportHttp } from '@ts-core/common/transport/http';
 import { DateUtil } from '@ts-core/common/util';
 import {
     APPLICATION_INJECTOR,
@@ -190,18 +189,13 @@ export const providers: any[] = [
     { provide: MAT_LABEL_GLOBAL_OPTIONS, useValue: { float: 'always' } },
 
     {
-        provide: TransportHttp,
-        deps: [Logger],
-        useFactory: transportServiceFactory
-    },
-    {
         provide: LedgerApi,
         deps: [Logger],
         useFactory: ledgerApiFactory
     },
     {
         provide: LedgerApiMonitor,
-        deps: [Logger, LedgerApi, WindowService, NotificationService],
+        deps: [Logger, WindowService, NotificationService],
         useFactory: ledgerApiMonitorFactory
     },
 
@@ -279,13 +273,12 @@ export class AppModule {
 }
 
 export function ledgerApiFactory(logger: ILogger): LedgerApi {
-    return new LedgerApi(logger);
+    let item = new LedgerApi(logger);
+    item.settings.isHandleError = true;
+    item.settings.isHandleLoading = true;
+    return item;
 }
 
-export function ledgerApiMonitorFactory(logger: ILogger, api: LedgerApi, windows: WindowService, notifications: NotificationService): LedgerApiMonitor {
-    return new LedgerApiMonitor(logger, api, windows, notifications);
-}
-
-export function transportServiceFactory(logger: ILogger): Transport {
-    return new TransportHttp(logger, { method: 'get', headers: {}, isHandleLoading: true, isHandleError: true });
+export function ledgerApiMonitorFactory(logger: ILogger, windows: WindowService, notifications: NotificationService): LedgerApiMonitor {
+    return new LedgerApiMonitor(logger, windows, notifications);
 }
