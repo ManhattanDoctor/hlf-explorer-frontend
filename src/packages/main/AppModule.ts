@@ -33,7 +33,6 @@ import {
     LanguageResolver,
     PipeBaseService,
     RouterBaseService,
-    UserBaseService,
     VICommonModule,
     VIComponentModule,
     WindowService,
@@ -274,8 +273,7 @@ export class AppModule {
 
 export function ledgerApiFactory(logger: ILogger): LedgerApi {
     let item = new LedgerApi(logger);
-    item.settings.isHandleError = true;
-    item.settings.isHandleLoading = true;
+    item.settings.isHandleError = item.settings.isHandleLoading = true;
     return item;
 }
 
