@@ -1,0 +1,12 @@
+infra:
+    replicas:
+        terminal-production: 3
+        _default: 1
+    registry:
+        secret_name: registrysecret
+    kube_dns_resolver:
+        _default: 'kube-dns.kube-system'
+        
+nodeSelector:
+  node_pool: worker-nodes
+
