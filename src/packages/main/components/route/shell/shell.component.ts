@@ -15,6 +15,7 @@ import { ThemeService } from '@ts-core/frontend/theme';
 import { filter, takeUntil } from 'rxjs/operators';
 import { RouterService } from '../../../services/RouterService';
 import { ShellService } from '../../../services/ShellService';
+import { LedgerApiMonitor } from '../../../services/LedgerApiMonitor';
 
 @Component({
     selector: 'shell',
@@ -42,6 +43,7 @@ export class ShellComponent extends ShellBaseComponent {
     constructor(
         public language: LanguageService,
         public theme: ThemeService,
+        public monitor: LedgerApiMonitor,
         private shell: ShellService,
         notifications: NotificationService,
         router: RouterBaseService,

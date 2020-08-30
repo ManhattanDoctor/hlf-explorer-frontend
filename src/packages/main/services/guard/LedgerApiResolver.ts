@@ -34,7 +34,7 @@ export class LedgerApiResolver extends DestroyableContainer implements Resolve<v
             if (data.type === LoadableEvent.COMPLETE) {
                 promise.resolve();
             } else if (data.type === LoadableEvent.ERROR) {
-                let message = `Unable to connect to socket ${this.monitor.url}`;
+                let message = `Unable to connect to socket ${encodeURIComponent(this.monitor.url)}`;
                 if (!_.isNil(data.error)) {
                     message += ` ${data.error.message}`;
                 }

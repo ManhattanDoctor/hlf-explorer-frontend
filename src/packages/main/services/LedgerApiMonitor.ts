@@ -24,8 +24,7 @@ export class LedgerApiMonitor extends LedgerApiSocket {
             .pipe(filter(event => event.type === LoadableEvent.ERROR && !notifications.has(this.socketDisconnectNotificationId)))
             .pipe(takeUntil(this.destroyed))
             .subscribe(async event => {
-                await notifications.question('error.socketDisconnected', { error: event.data }, null, { id: this.socketDisconnectNotificationId })
-                    .yesNotPromise;
+                await notifications.question('error.socketDisconnected', { url: this.url }, null, { id: this.socketDisconnectNotificationId }).yesNotPromise;
                 this.connect();
             });
 
