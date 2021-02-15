@@ -2,7 +2,7 @@
 
     <div class="row p-3 no-gutters align-items-center mouse-inactive border-bottom">
         <span class="col-2" [innerHTML]="'block.event.event' | viTranslate"></span>
-        <span class="col-10 mat-body-2" [class.text-danger]="!isExecuted" [innerHTML]="event.name | prettify"></span>
+        <span class="col-10 mat-body-2" [class.text-danger]="!wrapper?.isExecuted" [innerHTML]="event.name | prettify"></span>
     </div>
     <div class="row p-3 no-gutters align-items-center mouse-inactive border-bottom" *ngIf="wrapper?.isHasData">
         <span class="col-2" [innerHTML]="'block.event.data' | viTranslate"></span>
@@ -15,7 +15,7 @@
     </div>
     <p class="row p-3 no-gutters align-items-center mouse-inactive border-bottom" *ngIf="!wrapper.isValid">
         <span class="col-2" [innerHTML]="'block.transaction.validationCode.validationCode' | viTranslate"></span>
-        <span class="col-10 mat-body-2 text-danger text-one-line" [innerHTML]="transactionValidationCode | prettify"></span>
+        <span class="col-10 mat-body-2 text-danger text-one-line" [innerHTML]="wrapper?.transactionValidationCode | prettify"></span>
     </p>
     <p class="row p-3 no-gutters align-items-center mouse-inactive border-bottom" [vi-click-to-copy]="uid">
         <span class="col-2" [innerHTML]="'block.event.uid' | viTranslate"></span>

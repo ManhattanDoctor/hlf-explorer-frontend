@@ -34,13 +34,16 @@
         "exportXls": "Экспорт в XLS",
         "exportCsv": "Экспорт в CSV",
         "support": "Техническая поддержка",
-        "itemsPerPageLabel": "На странице",
-        "nextPage": "Следущая страница",
-        "loading": "Загружается...",
-        "previousPage": "Предыдующая страница",
-        "firstPage": "На первую страницу",
-        "lastPage": "На последнюю страницу"
+        "loading": "Загружается..."
     },
+    "paginator": {
+		"firstPage": "На первую страницу",
+		"itemsPerPage": "На странице",
+		"lastPage": "На последнюю страницу",
+		"nextPage": "Следующая страница",
+		"pageRange": "{current} из {total}",
+		"previousPage": "Предыдущая страница"
+	},
     "duration": {
         "day": "День",
         "week": "Неделя",

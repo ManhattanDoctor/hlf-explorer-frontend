@@ -8,9 +8,10 @@
     config.languages = 'en|English;ru|Русский';
     config.assetsUrl = 'assets/';
     
-    config.apiUrl = 'http://localhost:33000';
+    // config.apiUrl = 'http://localhost:33000';
     config.ledgerName = 'Karma';
-
+    config.apiUrl = 'https://hlf-explorer.karma.n-t.io';
+    
     config.theme = 'dark';
     config.themes = [
         {
