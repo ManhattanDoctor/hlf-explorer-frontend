@@ -3,7 +3,9 @@ import { LanguageService } from '@ts-core/frontend/language';
 import { TextContainerComponent } from '../../components/common/text-container/text-container.component';
 import { RouterService } from '../RouterService';
 import { ShellService } from '../ShellService';
-import { LedgerApi } from '@hlf-explorer/common/api';
+import { LedgerApiClient } from '@hlf-explorer/common/api';
+import { ResetContainerComponent } from '../../components/common/reset-container/reset-container.component';
+import { takeUntil } from 'rxjs/operators';
 
 export class ShellServiceBaseImpl extends ShellService {
     //--------------------------------------------------------------------------
@@ -13,7 +15,7 @@ export class ShellServiceBaseImpl extends ShellService {
     //--------------------------------------------------------------------------
 
     constructor(
-        protected api: LedgerApi,
+        protected api: LedgerApiClient,
         protected windows: WindowService,
         protected notifications: NotificationService,
         protected language: LanguageService,
@@ -40,5 +42,31 @@ export class ShellServiceBaseImpl extends ShellService {
 
         let content = this.windows.open(TextContainerComponent, config) as TextContainerComponent;
         content.text = text;
+    }
+
+    public async resetOpen(): Promise<void> {
+        let windowId = 'resetOpen';
+        if (this.windows.setOnTop(windowId)) {
+            return Promise.reject('Already opened');
+        }
+
+        let config = new WindowConfig(true, false, 600);
+        config.id = windowId;
+
+        let content = this.windows.open(ResetContainerComponent, config) as ResetContainerComponent;
+        content.events.pipe(takeUntil(content.destroyed)).subscribe(async event => {
+            switch (event) {
+                case ResetContainerComponent.EVENT_SUBMITTED:
+                    try {
+                        content.isDisabled = true;
+                        await this.api.reset(content.serialize().password);
+                        this.notifications.info('explorer.resetNotification');
+                    } finally {
+                        content.isDisabled = false;
+                    }
+                    content.close();
+                    break;
+            }
+        });
     }
 }

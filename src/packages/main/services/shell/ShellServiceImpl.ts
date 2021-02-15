@@ -3,7 +3,7 @@ import { NotificationService, WindowService } from '@ts-core/frontend-angular';
 import { LanguageService } from '@ts-core/frontend/language';
 import { RouterService } from '../RouterService';
 import { ShellServiceBaseImpl } from './ShellServiceBaseImpl';
-import { LedgerApi } from '@hlf-explorer/common/api';
+import { LedgerApiClient } from '@hlf-explorer/common/api';
 
 @Injectable()
 export class ShellServiceImpl extends ShellServiceBaseImpl {
@@ -13,7 +13,7 @@ export class ShellServiceImpl extends ShellServiceBaseImpl {
     //
     //--------------------------------------------------------------------------
 
-    constructor(api: LedgerApi, windows: WindowService, notifications: NotificationService, language: LanguageService, router: RouterService) {
+    constructor(api: LedgerApiClient, windows: WindowService, notifications: NotificationService, language: LanguageService, router: RouterService) {
         super(api, windows, notifications, language, router);
     }
 }

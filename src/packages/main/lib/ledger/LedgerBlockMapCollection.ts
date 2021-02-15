@@ -1,7 +1,7 @@
 import { PaginableDataSourceMapCollection } from '@ts-core/common/map/dataSource';
 import { LedgerBlock } from '@hlf-explorer/common/ledger';
 import { IPagination } from '@ts-core/common/dto';
-import { LedgerApi } from '@hlf-explorer/common/api';
+import { LedgerApiClient } from '@hlf-explorer/common/api';
 
 export class LedgerBlockMapCollection extends PaginableDataSourceMapCollection<LedgerBlock, LedgerBlock> {
     //--------------------------------------------------------------------------
@@ -10,7 +10,7 @@ export class LedgerBlockMapCollection extends PaginableDataSourceMapCollection<L
     //
     //--------------------------------------------------------------------------
 
-    constructor(private api: LedgerApi) {
+    constructor(private api: LedgerApiClient) {
         super('uid');
         this.sort.number = false;
     }
@@ -20,6 +20,10 @@ export class LedgerBlockMapCollection extends PaginableDataSourceMapCollection<L
     // 	Protected Methods
     //
     //--------------------------------------------------------------------------
+
+    protected isNeedClearAfterLoad():boolean {
+        return true;
+    }
 
     protected commitPageIndexProperties(): void {
         this.load();

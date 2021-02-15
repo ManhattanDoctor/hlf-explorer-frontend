@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, Renderer2 } from '@angular/core';
+import { Component, ElementRef, HostListener, Inject, Renderer2 } from '@angular/core';
 import { LoadableEvent } from '@ts-core/common';
 import { TransportHttpCommandAsync } from '@ts-core/common/transport/http';
 import {
@@ -26,7 +26,7 @@ import { RouterService } from '../../../services/RouterService';
 import { SettingsService } from '../../../services/SettingsService';
 import { ShellService } from '../../../services/ShellService';
 import * as _ from 'lodash';
-import { LedgerApi } from '@hlf-explorer/common/api';
+import { LedgerApiClient } from '@hlf-explorer/common/api';
 
 @Component({
     selector: 'root',
@@ -47,7 +47,7 @@ export class RootComponent extends ApplicationComponent<SettingsService> {
         private notifications: NotificationService,
         public loading: LoadingService,
         private pipe: PipeBaseService,
-        private api: LedgerApi,
+        private api: LedgerApiClient,
         private monitor: LedgerApiMonitor,
         private nativeWindow: NativeWindowService,
         element: ElementRef,
@@ -116,6 +116,11 @@ export class RootComponent extends ApplicationComponent<SettingsService> {
 
     protected readyHandler(): void {
         this.monitor.connect();
+    }
+
+    @HostListener('window:keydown.shift.b', ['$event'])
+    protected onKeyDown(event: KeyboardEvent): void {
+        this.shell.resetOpen();
     }
 
     //--------------------------------------------------------------------------

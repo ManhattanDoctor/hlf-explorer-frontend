@@ -4,7 +4,7 @@ import { LanguageService } from '@ts-core/frontend/language';
 import { LedgerBlockMapCollection } from '../lib/ledger/LedgerBlockMapCollection';
 import { LedgerBlockTransactionMapCollection } from '../lib/ledger/LedgerBlockTransactionMapCollection';
 import { LedgerBlockEventMapCollection } from '../lib/ledger/LedgerBlockEventMapCollection';
-import { LedgerApi } from '@hlf-explorer/common/api';
+import { LedgerApiClient } from '@hlf-explorer/common/api';
 
 @Injectable()
 export class LedgerService extends DestroyableContainer {
@@ -24,7 +24,7 @@ export class LedgerService extends DestroyableContainer {
     //
     //--------------------------------------------------------------------------
 
-    constructor(language: LanguageService, api: LedgerApi) {
+    constructor(language: LanguageService, api: LedgerApiClient) {
         super();
 
         this._blocks = new LedgerBlockMapCollection(api);

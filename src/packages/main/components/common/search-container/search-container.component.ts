@@ -4,7 +4,7 @@ import { LedgerApiMonitor } from '../../../services/LedgerApiMonitor';
 import { RouterService } from '../../../services/RouterService';
 import { SearchContainerBaseComponent } from '../SearchContainerBaseComponent';
 import { ViewUtil } from '@ts-core/frontend-angular';
-import { LedgerApi } from '@hlf-explorer/common/api';
+import { LedgerApiClient } from '@hlf-explorer/common/api';
 
 @Component({
     selector: 'search-container',
@@ -25,7 +25,7 @@ export class SearchContainerComponent extends SearchContainerBaseComponent {
     //
     //--------------------------------------------------------------------------
 
-    constructor(element: ElementRef, router: RouterService, api: LedgerApi, public monitor: LedgerApiMonitor) {
+    constructor(element: ElementRef, router: RouterService, api: LedgerApiClient, public monitor: LedgerApiMonitor) {
         super(router, api);
         ViewUtil.addClasses(element, 'd-flex background border rounded');
     }

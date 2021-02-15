@@ -4,7 +4,7 @@ import * as _ from 'lodash';
 import { LedgerBlock } from '@hlf-explorer/common/ledger';
 import { RouterService } from '../RouterService';
 import { WindowService } from '@ts-core/frontend-angular';
-import { LedgerApi } from '@hlf-explorer/common/api';
+import { LedgerApiClient } from '@hlf-explorer/common/api';
 
 @Injectable({ providedIn: 'root' })
 export class LedgerBlockResolver implements Resolve<LedgerBlock> {
@@ -14,7 +14,7 @@ export class LedgerBlockResolver implements Resolve<LedgerBlock> {
     //
     // --------------------------------------------------------------------------
 
-    constructor(private api: LedgerApi, private router: RouterService, private windows: WindowService) {}
+    constructor(private api: LedgerApiClient, private router: RouterService, private windows: WindowService) {}
 
     // --------------------------------------------------------------------------
     //

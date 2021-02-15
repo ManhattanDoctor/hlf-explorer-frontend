@@ -1,7 +1,7 @@
 import { ElementRef } from '@angular/core';
 import { Loadable, LoadableStatus } from '@ts-core/common';
 import * as _ from 'lodash';
-import { LedgerApi } from '@hlf-explorer/common/api';
+import { LedgerApiClient } from '@hlf-explorer/common/api';
 import { RouterService } from '../../services/RouterService';
 import { LedgerBlockTransaction, LedgerBlock, LedgerBlockEvent } from '@hlf-explorer/common/ledger';
 
@@ -20,7 +20,7 @@ export class SearchContainerBaseComponent extends Loadable {
     //
     //--------------------------------------------------------------------------
 
-    constructor(protected router: RouterService, protected api: LedgerApi) {
+    constructor(protected router: RouterService, protected api: LedgerApiClient) {
         super();
     }
 

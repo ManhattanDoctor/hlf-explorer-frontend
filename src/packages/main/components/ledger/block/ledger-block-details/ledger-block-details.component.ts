@@ -1,10 +1,11 @@
 import { Component, ViewContainerRef, Input } from '@angular/core';
-import { ViewUtil, IWindowContent } from '@ts-core/frontend-angular';
+import { ViewUtil, IWindowContent, ISelectListItem, SelectListItems, SelectListItem } from '@ts-core/frontend-angular';
 import { LedgerBlock, LedgerBlockEvent, LedgerBlockTransaction } from '@hlf-explorer/common/ledger';
 import { TextHighlightUtil } from '../../../../lib/util/TextHighlightUtil';
 import * as _ from 'lodash';
 import { MapCollection } from '@ts-core/common/map';
 import { RouterService } from '../../../../services/RouterService';
+import { LanguageService } from '@ts-core/frontend/language';
 
 @Component({
     selector: 'ledger-block-details',
@@ -18,13 +19,11 @@ export class LedgerBlockDetailsComponent extends IWindowContent {
     //--------------------------------------------------------------------------
 
     public rawText: string;
+    public tabs: SelectListItems<ISelectListItem<string>>;
     public blockEvents: MapCollection<LedgerBlockEvent>;
     public blockTransactions: MapCollection<LedgerBlockTransaction>;
 
     private _block: LedgerBlock;
-
-    private _mode: Mode;
-    private _selectedIndex: number;
 
     //--------------------------------------------------------------------------
     //
@@ -32,14 +31,20 @@ export class LedgerBlockDetailsComponent extends IWindowContent {
     //
     //--------------------------------------------------------------------------
 
-    constructor(container: ViewContainerRef, public router: RouterService) {
+    constructor(container: ViewContainerRef, language: LanguageService, public router: RouterService) {
         super(container);
         ViewUtil.addClasses(container.element, 'd-flex flex-column');
 
-        let mode = this.router.getParam<Mode>('tab', Mode.DETAILS);
-        this.mode = mode in Mode ? mode : Mode.DETAILS;
         this.blockEvents = new MapCollection('uid');
         this.blockTransactions = new MapCollection('uid');
+
+        this.tabs = new SelectListItems(language);
+        this.tabs.add(new SelectListItem('block.details', 0, 'details'));
+        this.tabs.add(new SelectListItem('block.transaction.transactions', 1, 'transactions'));
+        this.tabs.add(new SelectListItem('block.event.events', 2, 'events'));
+        this.tabs.add(new SelectListItem('block.rawData', 3, 'rawData'));
+        this.tabs.complete(0);
+        this.addDestroyable(this.tabs);
     }
 
     //--------------------------------------------------------------------------
@@ -55,15 +60,9 @@ export class LedgerBlockDetailsComponent extends IWindowContent {
         this.blockTransactions.clear();
         this.blockTransactions.addItems(this.block.transactions);
 
-        this.checkText();
-    }
+        let value = null;
 
-    private checkText(): void {
-        if (_.isNil(this.block) || !(this.mode === 'rawData')) {
-            return;
-        }
-
-        let value = TextHighlightUtil.text(JSON.stringify(this.block.rawData, null, 4));
+        value = TextHighlightUtil.text(JSON.stringify(this.block.rawData, null, 4));
         if (value !== this.rawText) {
             this.rawText = value;
         }
@@ -89,89 +88,4 @@ export class LedgerBlockDetailsComponent extends IWindowContent {
             this.commitBlockProperties();
         }
     }
-
-    //--------------------------------------------------------------------------
-    //
-    // 	Private Properties
-    //
-    //--------------------------------------------------------------------------
-
-    private get detailsIndex(): number {
-        return 0;
-    }
-    private get transactionsIndex(): number {
-        return 1;
-    }
-    private get eventsIndex(): number {
-        return 2;
-    }
-    private get rawDataIndex(): number {
-        return 3;
-    }
-
-    //--------------------------------------------------------------------------
-    //
-    // 	Public Properties
-    //
-    //--------------------------------------------------------------------------
-
-    public get mode(): Mode {
-        return this._mode;
-    }
-
-    @Input()
-    public set mode(value: Mode) {
-        if (value === this._mode) {
-            return;
-        }
-        this._mode = value;
-        this.checkText();
-        this.router.setParam('tab', value);
-
-        switch (value) {
-            case 'details':
-                this.selectedIndex = this.detailsIndex;
-                break;
-            case 'rawData':
-                this.selectedIndex = this.rawDataIndex;
-                break;
-            case 'transactions':
-                this.selectedIndex = this.transactionsIndex;
-                break;
-            case 'events':
-                this.selectedIndex = this.eventsIndex;
-                break;
-        }
-    }
-
-    public get selectedIndex(): number {
-        return this._selectedIndex;
-    }
-    public set selectedIndex(value: number) {
-        if (value === this._selectedIndex) {
-            return;
-        }
-        this._selectedIndex = value;
-        switch (value) {
-            case this.detailsIndex:
-                this.mode = Mode.DETAILS;
-                break;
-            case this.rawDataIndex:
-                this.mode = Mode.RAW_DATA;
-                break;
-            case this.transactionsIndex:
-                this.mode = Mode.TRANSACTIONS;
-                break;
-            case this.eventsIndex:
-                this.mode = Mode.EVENTS;
-                break;
-        }
-    }
-}
-
-enum Mode {
-    DETAILS = 'details',
-    RAW_DATA = 'rawData',
-    TRANSACTIONS = 'transactions',
-    EVENTS = 'events'
 }

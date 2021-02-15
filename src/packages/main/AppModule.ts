@@ -40,6 +40,7 @@ import {
 } from '@ts-core/frontend-angular';
 import { SettingsBaseService } from '@ts-core/frontend/service';
 import { TextContainerComponent } from './components/common/text-container/text-container.component';
+import { ResetContainerComponent } from './components/common/reset-container/reset-container.component';
 import { SearchContainerComponent } from './components/common/search-container/search-container.component';
 import { BlockComponent } from './components/route/block/block.component';
 import { TransactionComponent } from './components/route/transaction/transaction.component';
@@ -67,6 +68,7 @@ import { LedgerBlocksComponent } from './components/ledger/block/ledger-blocks/l
 import { LedgerApiMonitor } from './services/LedgerApiMonitor';
 import { LedgerService } from './services/LedgerService';
 import { PipeService } from './services/PipeService';
+import { ShellMenu } from './services/ShellMenu';
 import { RouterService } from './services/RouterService';
 import { SettingsService } from './services/SettingsService';
 import { PrettifyPipe } from './services/pipe/PrettifyPipe';
@@ -77,7 +79,7 @@ import { LedgerBlockTransactionResolver } from './services/guard/LedgerBlockTran
 import { ShellServiceImpl } from './services/shell/ShellServiceImpl';
 import { ShellService } from './services/ShellService';
 import { LedgerBlockDetailsComponent } from './components/ledger/block/ledger-block-details/ledger-block-details.component';
-import { LedgerApi } from '@hlf-explorer/common/api';
+import { LedgerApiClient } from '@hlf-explorer/common/api';
 
 export const imports: any[] = [
     BrowserModule,
@@ -174,6 +176,7 @@ export const providers: any[] = [
     LedgerService,
     SettingsService,
 
+    ShellMenu,
     LedgerApiResolver,
     LedgerBlockResolver,
 
@@ -188,7 +191,7 @@ export const providers: any[] = [
     { provide: MAT_LABEL_GLOBAL_OPTIONS, useValue: { float: 'always' } },
 
     {
-        provide: LedgerApi,
+        provide: LedgerApiClient,
         deps: [Logger],
         useFactory: ledgerApiFactory
     },
@@ -218,6 +221,7 @@ export const declarations: Array<any> = [
     TransactionComponent,
     TransactionsComponent,
     TextContainerComponent,
+    ResetContainerComponent,
 
     SearchContainerComponent,
 
@@ -239,7 +243,7 @@ export const declarations: Array<any> = [
     LedgerBlockDetailsComponent
 ];
 
-export const entryComponents: any[] = [RootComponent, TextContainerComponent, LedgerBlockDetailsComponent];
+export const entryComponents: any[] = [RootComponent, TextContainerComponent, ResetContainerComponent, LedgerBlockDetailsComponent];
 
 registerLocaleData(localeRu);
 registerLocaleData(localeEn);
@@ -271,8 +275,8 @@ export class AppModule {
     }
 }
 
-export function ledgerApiFactory(logger: ILogger): LedgerApi {
-    let item = new LedgerApi(logger);
+export function ledgerApiFactory(logger: ILogger): LedgerApiClient {
+    let item = new LedgerApiClient(logger);
     item.settings.isHandleError = item.settings.isHandleLoading = true;
     return item;
 }

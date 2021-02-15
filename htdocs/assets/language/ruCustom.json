@@ -8,6 +8,9 @@
         "transactions": "Транзакции",
         "events": "События"
     },
+    "reset": {
+        "notification": "Эксплорер сброшен"
+    },
     "search": {
         "description": "Поиск..."
     },
@@ -85,6 +88,9 @@
             "data": "Данные",
             "transactionHash": "⇛block.transaction.transaction",
             "createdDate": "⇛block.createdDate"
+        },
+        "batch": {
+            "batch": "Батч"
         }
     },
     "error": {

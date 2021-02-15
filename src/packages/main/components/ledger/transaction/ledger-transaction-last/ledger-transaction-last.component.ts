@@ -49,13 +49,16 @@ export class LedgerTransactionLastComponent extends DestroyableContainer {
         let value = null;
 
         let transaction = new LedgerBlockTransactionWrapper(this.transaction);
-        
+
         value = this.pipe.momentDateFromNow.transform(transaction.createdDate, null);
         if (value !== this.date) {
             this.date = value;
         }
 
         value = transaction.requestName;
+        if (transaction.isBatch) {
+            value = this.pipe.language.translate('block.batch.batch');
+        }
         if (value !== this.name) {
             this.name = value;
         }

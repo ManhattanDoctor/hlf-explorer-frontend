@@ -25,6 +25,14 @@ export class LedgerBlockEventWrapper extends LedgerBlockEvent {
         return !_.isEmpty(this.data);
     }
 
+    public get isValid(): boolean {
+        return this.transactionValidationCode === 0;
+    }
+
+    public get isExecuted(): boolean {
+        return this.isValid;
+    }
+
     public get eventData(): any {
         return this.isHasData ? LedgerBlockTransactionWrapper.parseJSON(this.data) : null;
     }

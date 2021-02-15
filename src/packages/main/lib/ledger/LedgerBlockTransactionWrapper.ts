@@ -3,6 +3,8 @@ import * as _ from 'lodash';
 import { ObjectUtil } from '@ts-core/common/util';
 import { ExtendedError } from '@ts-core/common/error';
 import { TextHighlightUtil } from '../util/TextHighlightUtil';
+import { TransportCryptoManagerEd25519 } from '@ts-core/common/transport/crypto';
+import { ISignature } from '@ts-core/common/crypto';
 
 export class LedgerBlockTransactionWrapper extends LedgerBlockTransaction {
     // --------------------------------------------------------------------------
@@ -74,10 +76,17 @@ export class LedgerBlockTransactionWrapper extends LedgerBlockTransaction {
         return this.isHasRequest ? LedgerBlockTransactionWrapper.parseJSON(this.request.request) : null;
     }
 
-    public get requestAlgorithm(): any {
-        return !_.isNil(this.request) && !_.isNil(this.request.options) && !_.isNil((this.request.options as any).signature)
-            ? (this.request.options as any).signature.algorithm
-            : null;
+    public get requestAlgorithm(): string {
+        if (_.isNil(this.request) || _.isNil(this.request.options)) {
+            return null;
+        }
+
+        let signature: ISignature = (this.request.options as any).signature;
+        if (_.isNil(signature)) {
+            return null;
+        }
+        let algorithm = signature.algorithm || TransportCryptoManagerEd25519.ALGORITHM;
+        return `${algorithm}`;
     }
 
     public get responseData(): any {
