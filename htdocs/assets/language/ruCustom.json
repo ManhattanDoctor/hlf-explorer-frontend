@@ -1,100 +1,100 @@
 {
-    "general": {
-        "footer": "<a href='https://ledger.monitor' target='_blank' tabindex='-1'>Hyperledger Explorer</a> © 2020"
-    },
-    "tab": {
-        "dashboard": "Главная",
-        "blocks": "Блоки",
-        "transactions": "Транзакции",
-        "events": "События"
-    },
-    "reset": {
-        "notification": "Эксплорер сброшен"
-    },
-    "search": {
-        "description": "Поиск..."
-    },
-    "ledger": {
-        "ledger": "Леджер",
-        "blocks": "Блоки",
-        "blocksLast": "Последние блоки",
-        "events": "События",
-        "eventsLast": "Последние события",
-        "transactions": "Транзакции",
-        "transactionsLast": "Последние транзакции",
-        "status": {
-            "connected": "Подключен",
-            "disconnected": "Не подключен"
-        }
-    },
-    "block": {
-        "block": "Блок",
-        "rawData": "Сырой блок",
-        "details": "Детализация",
-        "number": "Номер",
-        "hash": "Хеш",
-        "createdDate": "Дата создания",
-        "transaction": {
-            "uid": "UID",
-            "hash": "Хеш в леджере",
-            "transaction": "Транзакция",
-            "transactions": "Транзакции",
-            "createdDate": "⇛block.createdDate",
-            "request": "Запрос",
-            "response": "Ответ",
-            "linkCommandId": "Основная команда",
-            "error": "Ошибка",
-            "userId": "Пользователь",
-            "algorithm": "Подпись",
-            "status": {
-                "failed": "Ошибка",
-                "succeed": "Выполнена"
-            },
-            "validationCode": {
-                "validationCode": "Код валидации",
-                "0": "VALID",
-                "1": "NIL_ENVELOPE",
-                "2": "BAD_PAYLOAD",
-                "3": "BAD_COMMON_HEADER",
-                "4": "BAD_CREATOR_SIGNATURE",
-                "5": "INVALID_ENDORSER_TRANSACTION",
-                "6": "INVALID_CONFIG_TRANSACTION",
-                "7": "UNSUPPORTED_TX_PAYLOAD",
-                "8": "BAD_PROPOSAL_TXID",
-                "9": "DUPLICATE_TXID",
-                "10": "ENDORSEMENT_POLICY_FAILURE",
-                "11": "MVCC_READ_CONFLICT",
-                "12": "PHANTOM_READ_CONFLICT",
-                "13": "BAD_PROPOSAL_TXID",
-                "14": "TARGET_CHAIN_NOT_FOUND",
-                "15": "MARSHAL_TX_ERROR",
-                "16": "NIL_TXACTION",
-                "17": "EXPIRED_CHAINCODE",
-                "18": "CHAINCODE_VERSION_CONFLICT",
-                "19": "BAD_HEADER_EXTENSION",
-                "20": "BAD_CHANNEL_HEADER",
-                "21": "BAD_RESPONSE_PAYLOAD",
-                "22": "BAD_RWSET",
-                "23": "ILLEGAL_WRITESET",
-                "24": "INVALID_WRITESET",
-                "254": "NOT_VALIDATED",
-                "255": "INVALID_OTHER_REASON"
-            }
-        },
-        "event": {
-            "uid": "⇛block.transaction.uid",
-            "event": "Событие",
-            "events": "События",
-            "data": "Данные",
-            "transactionHash": "⇛block.transaction.transaction",
-            "createdDate": "⇛block.createdDate"
-        },
-        "batch": {
-            "batch": "Батч"
-        }
-    },
-    "error": {
-        "noLedger": "Не найден '{name}' леджер в эксплорере",
-        "socketDisconnected": "Потеряно подключение к сокет-серверу - {url}. Вы хотите переподключиться?"
-    }
+	"block": {
+		"batch": {
+			"batch": "Батч"
+		},
+		"block": "Блок",
+		"createdDate": "Дата создания",
+		"details": "Детализация",
+		"event": {
+			"createdDate": "⇛block.createdDate",
+			"data": "Данные",
+			"event": "Событие",
+			"events": "События",
+			"transactionHash": "⇛block.transaction.transaction",
+			"uid": "⇛block.transaction.uid"
+		},
+		"hash": "Хеш",
+		"number": "Номер",
+		"rawData": "Сырой блок",
+		"transaction": {
+			"algorithm": "Подпись",
+			"createdDate": "⇛block.createdDate",
+			"error": "Ошибка",
+			"hash": "Хеш в леджере",
+			"linkCommandId": "Основная команда",
+			"request": "Запрос",
+			"response": "Ответ",
+			"status": {
+				"failed": "Ошибка",
+				"succeed": "Выполнена"
+			},
+			"transaction": "Транзакция",
+			"transactions": "Транзакции",
+			"uid": "UID",
+			"userId": "Пользователь",
+			"validationCode": {
+				"0": "VALID",
+				"1": "NIL_ENVELOPE",
+				"2": "BAD_PAYLOAD",
+				"3": "BAD_COMMON_HEADER",
+				"4": "BAD_CREATOR_SIGNATURE",
+				"5": "INVALID_ENDORSER_TRANSACTION",
+				"6": "INVALID_CONFIG_TRANSACTION",
+				"7": "UNSUPPORTED_TX_PAYLOAD",
+				"8": "BAD_PROPOSAL_TXID",
+				"9": "DUPLICATE_TXID",
+				"10": "ENDORSEMENT_POLICY_FAILURE",
+				"11": "MVCC_READ_CONFLICT",
+				"12": "PHANTOM_READ_CONFLICT",
+				"13": "BAD_PROPOSAL_TXID",
+				"14": "TARGET_CHAIN_NOT_FOUND",
+				"15": "MARSHAL_TX_ERROR",
+				"16": "NIL_TXACTION",
+				"17": "EXPIRED_CHAINCODE",
+				"18": "CHAINCODE_VERSION_CONFLICT",
+				"19": "BAD_HEADER_EXTENSION",
+				"20": "BAD_CHANNEL_HEADER",
+				"21": "BAD_RESPONSE_PAYLOAD",
+				"22": "BAD_RWSET",
+				"23": "ILLEGAL_WRITESET",
+				"24": "INVALID_WRITESET",
+				"254": "NOT_VALIDATED",
+				"255": "INVALID_OTHER_REASON",
+				"validationCode": "Код валидации"
+			}
+		}
+	},
+	"error": {
+		"noLedger": "Не найден '{name}' леджер в эксплорере",
+		"socketDisconnected": "Потеряно подключение к сокет-серверу - {url}. Вы хотите переподключиться?"
+	},
+	"general": {
+		"footer": "<a href='https://ledger.monitor' target='_blank' tabindex='-1'>Hyperledger Explorer</a> © 2021"
+	},
+	"ledger": {
+		"blocks": "Блоки",
+		"blocksLast": "Последние блоки",
+		"events": "События",
+		"eventsLast": "Последние события",
+		"ledger": "Леджер",
+		"status": {
+			"connected": "Подключен",
+			"disconnected": "Не подключен"
+		},
+		"transactions": "Транзакции",
+		"transactionsLast": "Последние транзакции"
+	},
+	"reset": {
+		"notification": "Эксплорер сброшен"
+	},
+	"search": {
+		"description": "Поиск..."
+	},
+	"tab": {
+		"blocks": "Блоки",
+		"dashboard": "Главная",
+		"events": "События",
+		"transactions": "Транзакции"
+	}
 }
