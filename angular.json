@@ -3,37 +3,54 @@
     "version": 1,
     "newProjectRoot": "projects",
     "projects": {
-        "main": {
-            "root": "src/packages/main",
-            "sourceRoot": "src/packages/main",
+        "explorer": {
+            "root": "src/packages/application/explorer",
+            "sourceRoot": "src/packages/application/explorer",
             "projectType": "application",
             "prefix": "app",
             "schematics": {
                 "@schematics/angular:component": {
-                    "styleext": "scss"
+                    "style": "sass"
+                },
+                "@schematics/angular:application": {
+                    "strict": true
                 }
             },
             "architect": {
                 "build": {
                     "builder": "@angular-devkit/build-angular:browser",
                     "options": {
-                        "outputPath": "build/main",
-                        "index": "src/packages/main/index.html",
-                        "main": "src/packages/main/main.ts",
+                        "outputPath": "build/explorer",
+                        "index": "src/packages/application/explorer/index.html",
+                        "main": "src/packages/application/explorer/main.ts",
                         "polyfills": "polyfills.ts",
-                        "tsConfig": "src/packages/main/tsconfig.json",
+                        "aot": true,
+                        "tsConfig": "src/packages/application/explorer/tsconfig.json",
                         "assets": [
                             {
                                 "glob": "**/*",
-                                "input": "htdocs",
+                                "input": "node_modules/@ts-core/angular/asset/language",
+                                "output": "/assets/language"
+                            },
+                            {
+                                "glob": "**/*",
+                                "input": "htdocs/common",
+                                "output": "/"
+                            },
+                            {
+                                "glob": "**/*",
+                                "input": "htdocs/explorer",
                                 "output": "/"
                             }
                         ],
                         "styles": [
                             "node_modules/csshake/dist/csshake-horizontal.css",
-                            "node_modules/@fortawesome/fontawesome-free/css/all.css",
+                       
+                            "htdocs/explorer/assets/font/google/roboto/all.css",
+                            "htdocs/explorer/assets/font/awesome/css/all.css",
 
-                            "src/packages/main/styles/mat.scss"
+                            "src/packages/application/explorer/style/preloader.css",
+                            "src/packages/application/explorer/style/mat.scss"
                         ],
                         "scripts": [
                             "node_modules/css-element-queries/src/ResizeSensor.js",
@@ -42,27 +59,41 @@
                             "node_modules/numeral/locales/ru.js",
                             "node_modules/moment/moment.js",
                             "node_modules/moment/locale/ru.js",
-                            "node_modules/hammerjs/hammer.js",
-                            "node_modules/messageformat/messageformat.js",
-                            "node_modules/chart.js/dist/Chart.js"
-                        ]
+                            "node_modules/hammerjs/hammer.js"
+                        ],
+                        "allowedCommonJsDependencies": ["@ts-core/common", "@ts-core/frontend"],
+                        "serviceWorker": true,
+                        "ngswConfigPath": "src/packages/application/explorer/ngsw-config.json"
                     },
                     "configurations": {
+                        "development": {
+                            "buildOptimizer": false,
+                            "optimization": false,
+                            "vendorChunk": true,
+                            "extractLicenses": false,
+                            "sourceMap": true,
+                            "namedChunks": true
+                        },
                         "production": {
                             "optimization": true,
-                            "outputHashing": "none",
+                            "outputHashing": "all",
                             "sourceMap": false,
-                            "extractCss": true,
                             "namedChunks": false,
                             "aot": true,
                             "extractLicenses": false,
                             "vendorChunk": false,
                             "buildOptimizer": true,
+
                             "budgets": [
                                 {
                                     "type": "initial",
                                     "maximumWarning": "5mb",
                                     "maximumError": "10mb"
+                                },
+                                {
+                                    "type": "anyComponentStyle",
+                                    "maximumWarning": "2kb",
+                                    "maximumError": "4kb"
                                 }
                             ]
                         }
@@ -71,11 +102,11 @@
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "options": {
-                        "browserTarget": "main:build"
+                        "browserTarget": "explorer:build"
                     },
                     "configurations": {
                         "production": {
-                            "browserTarget": "main:build:production"
+                            "browserTarget": "explorer:build:production"
                         }
                     }
                 }

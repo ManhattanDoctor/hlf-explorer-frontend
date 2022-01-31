@@ -6,7 +6,7 @@
         "sourceMap": true,
         "declaration": false,
         "target": "es2015",
-        "module": "es2015",
+        "module": "es2020",
         "moduleResolution": "node",
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
@@ -14,10 +14,26 @@
         "lib": ["es2018", "dom"],
         "allowSyntheticDefaultImports": true,
         "forceConsistentCasingInFileNames": true,
+
+        "strict": true,
+        "strictFunctionTypes": false,
+        "noImplicitAny": false,
+        "strictNullChecks": false,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+        "downlevelIteration": true,
         "paths": {
-            "@hlf-explorer/common/*": ["./src/common/*"],
-            "core-js/es7/reflect": ["./node_modules/core-js/proposals/reflect-metadata"],
-            "core-js/es6/": ["./node_modules/core-js/es/"]
+            "@common/*": ["./src/externals/common/*"],
+            "@core/*": ["./src/packages/module/core/*"],
+            "@shared/*": ["./src/packages/module/shared/*"],
+            "@feature/*": ["./src/packages/module/feature/*"],
+            "@page/*": ["./src/packages/page/*"]
         }
+    },
+    "angularCompilerOptions": {
+        "enableI18nLegacyMessageIdFormat": false,
+        "strictInjectionParameters": true,
+        "strictInputAccessModifiers": true,
+        "strictTemplates": true
     }
 }

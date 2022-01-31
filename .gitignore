@@ -21,3 +21,6 @@ yarn-error.log
 /packages/**/.npmrc
 /packages/**/.npmignore
 /packages/**/LICENSE
+
+/.angular
+/build/explorer
