@@ -65,11 +65,13 @@ function initializerFactory(settings: SettingsService): () => Promise<void> {
 }
 
 function clientFactory(logger: ILogger, settings: SettingsService): LedgerApiClient {
-    let item = new LedgerApiClient(logger);
+    let item = new LedgerApiClient(logger, settings.apiUrl, settings.ledgerName);
+    /*
     item.url = settings.apiUrl;
     item.settings.isHandleError = true;
     item.settings.defaultLedgerName = settings.ledgerName;
-    // item.level = LoggerLevel.NONE;
+    item.level = LoggerLevel.NONE;
+    */
     return item;
 }
 

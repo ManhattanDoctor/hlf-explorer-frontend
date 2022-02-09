@@ -33,6 +33,7 @@ export class BlockResolver implements Resolve<LedgerBlock> {
         }
 
         try {
+            console.log('called', this.api);
             return await this.api.getBlock(hashOrNumber);
         } catch (error) {
             this.router.navigate(RouterService.DEFAULT_URL);

@@ -5,7 +5,7 @@ import { LoadableEvent } from '@ts-core/common';
 import * as _ from 'lodash';
 
 import { ApplicationComponent, LoginResolver, NotificationService, ViewUtil, WindowService } from '@ts-core/angular';
-import { TransportHttpCommandAsync } from '@ts-core/common/transport/http';
+import { TransportHttp, TransportHttpCommandAsync } from '@ts-core/common/transport/http';
 import { LanguageService } from '@ts-core/frontend/language';
 import { ThemeService } from '@ts-core/frontend/theme';
 import { RouterService, SettingsService } from '@core/service';
@@ -15,7 +15,10 @@ import { RouteConfigLoadEnd, RouteConfigLoadStart } from '@angular/router';
 import 'numeral/locales/ru';
 import 'moment/locale/ru';
 import { LedgerApiMonitor } from '@core/service';
-import { LedgerApiClient } from '@hlf-explorer/common/api';
+import { BLOCK_URL, LedgerApiClient } from '@hlf-explorer/common/api';
+import { ILedgerBlockGetRequest, ILedgerBlockGetResponse } from '@hlf-explorer/common/api/block';
+import { TransformUtil } from '@ts-core/common/util';
+import { LedgerBlock } from '@hlf-explorer/common/ledger';
 
 @Component({
     selector: 'root',
@@ -64,9 +67,9 @@ export class RootComponent extends ApplicationComponent<SettingsService> {
 
     private initializeObservers(): void {
         let manager = this.addDestroyable(new LoadingServiceManager(this.loading));
-        manager.addLoadable(this.language, this.monitor, this.api.http);
+        manager.addLoadable(this.language, this.monitor, this.api);
 
-        this.api.http.events
+        this.api.events
             .pipe(filter(event => event.type === LoadableEvent.ERROR))
             .pipe(map(<T>(event) => event.data as TransportHttpCommandAsync<T>))
             .pipe(takeUntil(this.destroyed))
@@ -103,7 +106,7 @@ export class RootComponent extends ApplicationComponent<SettingsService> {
         this.router.navigate(`${RouterService.MESSAGE_URL}/${message}`);
     }
 
-    protected readyHandler(): void {
+    protected async readyHandler(): Promise<void> {
         this.monitor.connect();
     }
 }

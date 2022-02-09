@@ -2,6 +2,11 @@
     "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
     "version": 1,
     "newProjectRoot": "projects",
+    "cli": {
+        "cache": {
+            "enabled": false
+        }
+    },
     "projects": {
         "explorer": {
             "root": "src/packages/application/explorer",
@@ -45,7 +50,7 @@
                         ],
                         "styles": [
                             "node_modules/csshake/dist/csshake-horizontal.css",
-                       
+
                             "htdocs/explorer/assets/font/google/roboto/all.css",
                             "htdocs/explorer/assets/font/awesome/css/all.css",
 
@@ -67,22 +72,24 @@
                     },
                     "configurations": {
                         "development": {
-                            "buildOptimizer": false,
+                            "aot": false,
                             "optimization": false,
-                            "vendorChunk": true,
-                            "extractLicenses": false,
+                            "buildOptimizer": false,
+                            "outputHashing": "none",
                             "sourceMap": true,
-                            "namedChunks": true
+                            "vendorChunk": false,
+                            "namedChunks": false,
+                            "extractLicenses": false
                         },
                         "production": {
+                            "aot": true,
                             "optimization": true,
+                            "vendorChunk": false,
+                            "namedChunks": false,
+                            "buildOptimizer": true,
                             "outputHashing": "all",
                             "sourceMap": false,
-                            "namedChunks": false,
-                            "aot": true,
                             "extractLicenses": false,
-                            "vendorChunk": false,
-                            "buildOptimizer": true,
 
                             "budgets": [
                                 {
@@ -102,7 +109,7 @@
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "options": {
-                        "browserTarget": "explorer:build"
+                        "browserTarget": "explorer:build:development"
                     },
                     "configurations": {
                         "production": {
